@@ -14,30 +14,35 @@
     <div class="stats">
         
                 
-        <div class="stat-card">
-            <h3>Seats</h3>
-            <p>0</p>
-        </div>
-        
-        <div class="stat-card">
-            <h3>Occupied Seats</h3>
-            <p>0</p>
-        </div>
-        
+        <a href="{% url 'SeatManagementPage'%}">
         <div class="stat-card">
             <h3>Available Seats</h3>
             <p>0</p>
-        </div>
+        </div></a>
+        
+        <a href="{% url 'SeatManagementPage'%}">
+        <div class="stat-card">
+            <h3>Occupied Seats</h3>
+            <p>0</p>
+        </div></a>
+        
+        <a href="{% url 'SeatManagementPage'%}">
+        <div class="stat-card">
+            <h3>Vacant Seats</h3>
+            <p>0</p>
+        </div></a>
 
+        <a href="{% url 'FinancePage'%}">
         <div class="stat-card">
             <h3>Total Earning</h3>
             <p>0</p>
-        </div>
+        </div></a>
 
+        <a href="{% url 'MembersPage'%}">
         <div class="stat-card">
             <h3>Total Members</h3>
             <p>0</p>
-        </div>
+        </div></a>
     </div>
 
 
