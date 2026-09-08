@@ -1,0 +1,152 @@
+/*
+color pallet
+#031C16  Background
+#063B2D  Deep green
+#0A4A39  Card/surface
+#10B981  Primary green
+#14B8A6  Teal
+#5EEAD4  Mint highlight
+*/
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #031C16;
+    color: white;
+}
+
+.app {
+    display: grid;
+    min-height: 100vh;
+
+    grid-template-columns: 400px 1fr;
+    grid-template-rows: 100px 1fr;
+
+    gap: 5px;
+}
+
+
+/* =========================
+   LOGO / HEADER
+========================= */
+
+.logo {
+    background-color: #063B2D;
+
+    width: 100%;
+
+    grid-column: 1 / -1;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border-bottom: 2px solid #10B981;
+    border-radius: 0 0 15px 15px;
+}
+
+.logoimg {
+    width: 200px;
+}
+
+
+/* =========================
+   SIDEBAR
+========================= */
+
+.links {
+    grid-column: 1;
+    grid-row: 2;
+
+    background-color: #031C16;
+
+    border-right: 2px solid #063B2D;
+    border-radius: 15px;
+
+    padding-top: 15px;
+}
+
+
+.link-logo {
+    width: 24px;
+    height: 24px;
+    margin-right: 10px;
+}
+
+.links ul {
+    list-style: none;
+    padding: 0;
+}
+
+
+.links a {
+    text-decoration: none;
+
+    display: flex;
+    align-items: center;
+
+    padding: 15px;
+    margin: 5px;
+
+    color: white;
+
+    border-radius: 25px;
+
+    transition: 0.2s ease;
+}
+
+.links a:hover {
+    background-color: #14B8A6;
+    color: #031C16;
+}
+
+
+/* =========================
+   MAIN CONTENT
+========================= */
+
+main {
+    margin-top: 5px;
+    padding: 15px;
+
+    grid-column: 2;
+    grid-row: 2;
+
+    background-color: #063B2D;
+
+    border-radius: 15px;
+
+    border: 1px solid #0A4A39;
+}
+
+/* =========================
+   stats div  and cards styles
+========================= */
+
+.stats{
+
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    gap:15px;
+
+}
+
+.stat-card{
+    background-color: #0A4A39;
+    padding: 20px;
+    border-radius: 15px;
+}
+
+.stat-card h3{
+    color: white;
+}
+
+.stat-card p{
+    color: #5eead4;
+    font-size: 30px;
+    font-weight: ;: bold;
+}

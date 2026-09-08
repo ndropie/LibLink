@@ -1,0 +1,31 @@
+{% load static %}
+
+<header class="logo">
+    <img src="{% static 'Images/Liblink Logo.png' %}" alt="" class="logoimg">
+
+</header>
+<div class="links">
+<nav>
+    <ul>
+        <li class="navlinks"><a href="{% url 'Dashboard' %}" >
+            <img class="link-logo" src="{% static 'Images/dashboard.png'%}" alt="">Dashboard</a>
+        </li>
+        <li class="navlinks"><a href="{% url 'SeatManagementPage' %}">
+            <img class="link-logo" src="{% static 'Images/seat.png'%}" alt="">Seat Management</a>
+        </li>
+        <li class="navlinks"><a href="{% url 'MembersPage' %}" >
+            <img class="link-logo" src="{% static 'Images/members.png'%}" alt="">Members</a>
+        </li>
+        <li class="navlinks"><a href="{% url 'MembershipPage' %}" >
+            <img class="link-logo" src="{% static 'Images/memberships.png'%}" alt="">Membership</a>
+        </li>
+        <li class="navlinks"><a href="{% url 'FinancePage' %}" >
+            <img class="link-logo" src="{% static 'Images/finance.png'%}" alt="">Finance</a>
+        </li>
+        <li class="navlinks"><a href="{% url 'SettingsPage' %}" >
+            <img class="link-logo" src="{% static 'Images/settings.png'%}" alt="">Settings</a>
+        </li>
+    </ul>
+
+</nav>
+</div>
