@@ -4,46 +4,86 @@
     Dashbaord
 {% endblock %}
 
+
 {% block  pagecontent %}
 
-    <div class="dashboard-header">
-        <h1>Dashboard</h1>
-        <p>Library overview</p>
-    </div>
+         <div class="dashboard-header">
+            <h1>Dashboard</h1>
+            <p>Library overview</p>
+        </div>
 
-    <div class="stats">
-        
-                
-        <a href="{% url 'SeatManagementPage'%}">
-        <div class="stat-card">
-            <h3>Available Seats</h3>
-            <p>0</p>
-        </div></a>
-        
-        <a href="{% url 'SeatManagementPage'%}">
-        <div class="stat-card">
-            <h3>Occupied Seats</h3>
-            <p>0</p>
-        </div></a>
-        
-        <a href="{% url 'SeatManagementPage'%}">
-        <div class="stat-card">
-            <h3>Vacant Seats</h3>
-            <p>0</p>
-        </div></a>
+    <section class="dashboard-a1">
+        <!-- stats cards -->
 
-        <a href="{% url 'FinancePage'%}">
-        <div class="stat-card">
-            <h3>Total Earning</h3>
-            <p>0</p>
-        </div></a>
+        <div class="stats">
+            <a href="{% url 'SeatManagementPage'%}">
+            <div class="stat-card">
+                <h3>Available Seats</h3>
+                <p>0</p>
+            </div></a>
+            
+            <a href="{% url 'SeatManagementPage'%}">
+            <div class="stat-card">
+                <h3>Occupied Seats</h3>
+                <p>0</p>
+            </div></a>
+            
+            
+            <a href="{% url 'SeatManagementPage'%}">
+            <div class="stat-card">
+                <h3>Vacant Seats</h3>
+                <p>0</p>
+            </div></a>
 
-        <a href="{% url 'MembersPage'%}">
-        <div class="stat-card">
-            <h3>Total Members</h3>
-            <p>0</p>
-        </div></a>
-    </div>
 
+
+            
+            <div class="stat-card">
+                <h3>Today's Birthdays</h3>
+                <ul>
+
+                    <li></li>
+                </ul>
+            </div>
+
+            <a href="{% url 'FinancePage'%}">
+            <div class="stat-card">
+                <h3>Total Earning</h3>
+                <p>0</p>
+            </div></a>
+
+            <a href="{% url 'MembersPage'%}">
+            <div class="stat-card">
+                <h3>Total Members</h3>
+                <p>0</p>
+            </div></a>
+        </div>
+        <!-- today's birthdays -->
+    </section>
+
+    <section class="dashboard-a2">
+        <!-- seat map -->
+         
+         
+    </section>
+
+    <section class="dashboard-b1">
+        <!-- chart 1 -->
+    </section>
+
+    <section class="dashboard-b2">
+        <!-- chart 2 -->
+    </section>
+
+    <section class="dashboard-b3">
+        <!-- chart 3 -->
+    </section>
+
+    <section class="dashboard-c">
+        <!-- recent notifications -->
+    </section>
+
+
+</div>
 
 {% endblock %}

@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block pagetitle%} Add Member {% endblock %}
+
+{% block pagecontent %}
+
+<div class="add-member-header">
+
+    <div>
+        <h1>Add Member</h1>
+        <p>Register a new library member</p>
+    </div>
+
+</div>
+
+<div class="member-form">
+    <form method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="full-name">Full Name</label>
+            <input 
+                type="text"
+                id="full-name"
+                name="full_name"
+                placeholder="Enter member name"
+            >
+        </div>
+        <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input 
+                type="tel"
+                id="phone"
+                name="phone"
+                placeholder="Enter phone number"
+            >
+        </div>   
+        <div class="form-group"> 
+            <label for="email">Email</label>
+            <input 
+                type="email"
+                id="email"
+                name="email"
+                placeholder="Enter email address"
+            >
+        </div>
+        <div class="form-group"> 
+            <label for="date-of-birth">Date of Birth</label>
+            <input 
+                type="date"
+                id="date-of-birth"
+                name="date_of_birth"
+            >
+        </div>
+        <div class="form-group"> 
+            <label for="address">Address</label>
+            <textarea
+                id="address"
+                name="address"
+                placeholder="Enter member address"
+                rows="3"
+            ></textarea>
+        </div>
+        <div class="form-group"> 
+            <label for="joined-date">Join Date</label>
+            <input 
+                type="date"
+                id="joined-date"
+                name="joined_date"
+            >
+        </div>
+
+        <div class="form-actions">
+
+            <a href="{% url 'MembersPage' %}" class="secondary-btn">
+                Cancel
+            </a>
+
+            <button type="submit" class="primary-btn">
+                Save Member
+            </button>
+        </div>
+        </form>
+</div>
+
+{% endblock%}

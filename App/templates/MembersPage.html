@@ -5,6 +5,81 @@
 
 {% block  pagecontent %}
 
+<div class="members-header">
 
+    <div>
+        <h1>Members</h1>
+        <p>Manage library members</p>
+    </div>
+
+    <a href="{% url 'AddMember' %}" class="primary-btn">
+        + Add Member
+    </a>
+
+</div>
+<div class="members-toolbar">
+
+    <input 
+        type="text" 
+        placeholder="Search members..."
+        class="member-search"
+    >
+    
+    <select name="member-status-filter" class="member-status-filter">
+        <option value="">All Status</option>
+        <option value="active">Active</option>
+        <option value="inactive">Inactive</option>
+    </select>
+
+    <select name="member-plan-filter" class="member-plan-filter">
+        <option value="">All plans</option>
+        <option value="monthly">Monthly</option>
+        <option value="quaterly">Quarterly</option>
+        <option value="yearly">Yearly</option>
+    </select>
+
+</div>
+
+<div class="members-table">
+<table>
+
+    <thead>
+        <tr>
+            <th>Member ID</th>
+            <th>Name</th>
+            <th>Phone</th>
+            <th>Membership</th>
+            <th>Seat</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for member in allmembers %}
+        <tr>
+            <td>{{member.id}}</td>
+            <td>{{member.full_name}}</td>
+            <td>{{member.phone}}</td>
+            <td>Monthly</td>
+            <td>A-12</td>
+            <td>
+                <span class="status-active">
+                    {% if member.status %} 
+                        Active
+                    {% else %}
+                        Inactive
+                    {% endif %}
+                </span>
+            </td>   
+            <td>
+                <a href="{% url 'MemberDetails' member.id %}">View</a>
+                <a href="{% url 'EditMember' member.id %}">Edit</a>
+            </td>
+        </tr>
+    {% endfor %}
+</tbody>
+
+</table>
+</div>
 
 {% endblock %}
