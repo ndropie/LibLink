@@ -63,12 +63,14 @@
             <td>Monthly</td>
             <td>A-12</td>
             <td>
-                <span class="status-active">
-                    {% if member.status %} 
-                        Active
-                    {% else %}
+                {% if member.status %} 
+                    <span class="active">
+                    Active</span>
+                {% else %}
+                    
+                 <span class="inactive">
                         Inactive
-                    {% endif %}
+                {% endif %}
                 </span>
             </td>   
             <td>

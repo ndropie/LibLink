@@ -473,8 +473,12 @@ STAT CARD
     background:var(--surface-hover);
 }
 
-.status-active{
+.active{
     color:var(--success);
+    font-weight: 600;
+}
+.inactive{
+    color:var(--danger);
     font-weight: 600;
 }
 .members-table td a{
@@ -656,4 +660,237 @@ STAT CARD
     justify-content: flex-end;
     gap: 10px;
     margin-top: 10px;
+}
+
+
+/* =========================================================
+   Styles of Member Details page
+========================================================= */
+
+.member-details-header{
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+
+}
+.member-details-header h1{
+    margin: 0px;
+    font-size: 28px;
+    font-weight: 600;
+    color: var(--text-primary);
+
+}
+
+.member-details-header p{
+    margin-top: 4px;
+    color: var(--text-muted);
+    font-size: 14px;
+
+}
+
+.member-details-action{
+    display: flex;
+    align-items: center;
+    gap:10px;
+}
+.member-details-action a{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 10px 16px;
+    border-radius: 10px;
+    
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+
+    transition: 
+        bakground 0.2 ease,
+        color 0.2 ease,
+        transfrom 0.2 ease;
+
+}
+
+.member-details-card {
+    background: var(--surface-card);
+
+    border: 1px solid var(--border);
+    border-radius: 15px;
+
+    padding: 28px;
+}
+
+.member-profile{
+    display: flex;
+    align-items: center;
+    gap: 16px;
+
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--border);
+
+}
+
+.member-avatar{
+    width: 58px;
+    height: 58px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+    
+    border-radius: 50%;
+    background:var(--surface);
+    border: 1px solid var(--primary);
+
+    color: var(--primary);
+
+    font-size: 22px;
+    font-weight: 700;
+}
+
+.member-profile h2 {
+    margin: 0 0 7px;
+
+    color: var(--text-primary);
+
+    font-size: 21px;
+    font-weight: 600;
+}
+
+
+.member-status {
+    display: inline-flex;
+    align-items: center;
+
+    padding: 4px 9px;
+
+    border-radius: 6px;
+
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.member-status.active {
+    background: rgba(16, 185, 129, 0.12);
+    color: var(--success);
+}
+
+.member-status.inactive {
+    background: rgba(239, 68, 68, 0.12);
+    color: var(--danger);
+}
+
+.member-info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin-top: 24px;
+}
+
+.member-info-item {
+    padding: 18px 20px;
+    border-bottom: 1px solid var(--border);
+}
+
+
+/* Vertical divider */
+
+.member-info-item:nth-child(odd) {
+    border-right: 1px solid var(--border);
+}
+
+
+.info-label {
+    display: block;
+
+    margin-bottom: 7px;
+
+    color: var(--text-muted);
+
+    font-size: 12px;
+    font-weight: 600;
+
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.info-value {
+    display: block;
+
+    color: var(--text-secondary);
+
+    font-size: 14px;
+    font-weight: 500;
+
+    word-break: break-word;
+}
+
+.member-address-section {
+    margin-top: 24px;
+
+    padding: 20px;
+
+    background: var(--surface);
+
+    border: 1px solid var(--border);
+    border-radius: 10px;
+}
+.member-address {
+    color: var(--text-secondary);
+
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+
+.member-created {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-top: 22px;
+    padding-top: 18px;
+
+    border-top: 1px solid var(--border);
+}
+
+
+@media (max-width: 700px) {
+
+    .member-details-header {
+        flex-direction: column;
+        align-items: flex-start;
+
+        gap: 16px;
+    }
+
+    .member-details-actions {
+        width: 100%;
+    }
+
+    .member-details-actions a {
+        flex: 1;
+    }
+
+    .member-details-card {
+        padding: 20px;
+    }
+
+    .member-info-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .member-info-item:nth-child(odd) {
+        border-right: none;
+    }
+
+    .member-created {
+        flex-direction: column;
+        align-items: flex-start;
+
+        gap: 6px;
+    }
 }

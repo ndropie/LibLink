@@ -42,6 +42,7 @@ def MemberDetails(request,MemberID):
     return render ( request, "MemberDetails.html",
                    {"member":member})
 
+
 def EditMember(request, MemberID):
     member = Member.objects.get(id = MemberID)
 
@@ -52,9 +53,10 @@ def EditMember(request, MemberID):
         member.date_of_birth = request.POST.get("date_of_birth")
         member.address = request.POST.get("address")
         member.joined_date = request.POST.get("joined_date")
+        member.status = request.POST.get("status")
 
         member.save()
-        return redirect("EditMember",MemberID= member.id)
+        return redirect("MembersPage")
 
     return render(request,"EditMember.html",{"member":member})
 

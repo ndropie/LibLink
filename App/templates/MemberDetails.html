@@ -1,11 +1,181 @@
 {% extends 'base.html' %}
 
 {% block pagetitle %}
-    View Mode
+View Mode
 {% endblock %}
 
+{% block pagecontent %}
 
-{% block  pagecontent %}
+<div class="member-details-header">
 
+
+<div>
+    <h1>Member Details</h1>
+    <p>View member information</p>
+</div>
+
+<div class="member-details-actions">
+
+    <a href="{% url 'EditMember' member.id %}" class="secondary-btn">
+        Edit Member
+    </a>
+
+    <a href="{% url 'MembersPage' %}" class="secondary-btn">
+        Back to Members
+    </a>
+
+</div>
+
+
+</div>
+
+<div class="member-details-card">
+
+
+<div class="member-profile">
+
+    <div class="member-avatar">
+        {{ member.full_name|first|upper }}
+    </div>
+
+    <div>
+        <h2>{{ member.full_name }}</h2>
+
+        {% if member.status %}
+            <span class="member-status active">
+                Active
+            </span>
+        {% else %}
+            <span class="member-status inactive">
+                Inactive
+            </span>
+        {% endif %}
+
+    </div>
+
+</div>
+
+
+<div class="member-info-grid">
+
+    <div class="member-info-item">
+
+        <span class="info-label">
+            Full Name
+        </span>
+
+        <span class="info-value">
+            {{ member.full_name }}
+        </span>
+
+    </div>
+
+
+    <div class="member-info-item">
+
+        <span class="info-label">
+            Phone Number
+        </span>
+
+        <span class="info-value">
+            {{ member.phone }}
+        </span>
+
+    </div>
+
+
+    <div class="member-info-item">
+
+        <span class="info-label">
+            Email
+        </span>
+
+        <span class="info-value">
+
+            {% if member.email %}
+                {{ member.email }}
+            {% else %}
+                —
+            {% endif %}
+
+        </span>
+
+    </div>
+
+
+    <div class="member-info-item">
+
+        <span class="info-label">
+            Date of Birth
+        </span>
+
+        <span class="info-value">
+            {{ member.date_of_birth|date:"d M Y" }}
+        </span>
+
+    </div>
+
+
+    <div class="member-info-item">
+
+        <span class="info-label">
+            Joined Date
+        </span>
+
+        <span class="info-value">
+            {{ member.joined_date|date:"d M Y" }}
+        </span>
+
+    </div>
+
+
+    <div class="member-info-item">
+
+        <span class="info-label">
+            Account Status
+        </span>
+
+        <span class="info-value">
+
+            {% if member.status %}
+                Active
+            {% else %}
+                Inactive
+            {% endif %}
+
+        </span>
+
+    </div>
+
+</div>
+
+
+<div class="member-address-section">
+
+    <span class="info-label">
+        Address
+    </span>
+
+    <div class="member-address">
+        {{ member.address }}
+    </div>
+
+</div>
+
+
+<div class="member-created">
+
+    <span class="info-label">
+        Registered On
+    </span>
+
+    <span class="info-value">
+        {{ member.created_at|date:"d M Y, h:i A" }}
+    </span>
+
+</div>
+
+
+</div>
 
 {% endblock %}
