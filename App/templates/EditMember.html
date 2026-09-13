@@ -6,6 +6,26 @@
 
 {% block pagecontent %}
 
+{% if error %}
+<div class="warning-overlay">
+    <div class="warning-popup">
+
+        <div class="warning-icon">
+            !
+        </div>
+
+        <h2>Member ID Already Exists</h2>
+
+        <p>{{ error }}</p>
+
+        <a href="{% url 'EditMember' member.id %}" class="warning-btn">
+            Okay
+        </a>
+
+    </div>
+</div>
+{% endif %}
+
 <div class="edit-member-header">
     <div>
         <h1>Edit Member</h1>
@@ -33,6 +53,18 @@
                 id="full_name"
                 name="full_name"
                 value="{{ member.full_name }}"
+                required
+            >
+        </div>
+
+        
+        <div class="form-group">
+            <label for="MemberID">Member ID</label>
+            <input
+                type="text"
+                id="MemberID"
+                name="MemberID"
+                value="{{ member.MemberID }}"
                 required
             >
         </div>
@@ -121,7 +153,17 @@
     </div>
 
     <div class="form-actions">
-        <a href="{% url 'MemberDetails' member.id%}" class="secondary-btn">
+
+    <button
+        type="button"
+        class="danger-btn"
+        onclick="if(confirm('Are you sure you want to delete this member? This action cannot be undone.')) { document.getElementById('delete-member-form').submit(); }"
+    >
+        Delete Member
+    </button>
+
+    <div class="form-actions-right">
+        <a href="{% url 'MemberDetails' member.id %}" class="secondary-btn">
             Cancel
         </a>
 
@@ -130,6 +172,17 @@
         </button>
     </div>
 
+</div>
+
+</form>
+
+<form
+    method="POST"
+    action="{% url 'DeleteMember' member.id %}"
+    id="delete-member-form"
+    style="display: none;"
+>
+    {% csrf_token %}
 </form>
 
 {% endblock %}

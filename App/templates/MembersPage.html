@@ -57,7 +57,7 @@
     <tbody>
     {% for member in allmembers %}
         <tr>
-            <td>{{member.id}}</td>
+            <td>{{member.MemberID}}</td>
             <td>{{member.full_name}}</td>
             <td>{{member.phone}}</td>
             <td>Monthly</td>
@@ -73,7 +73,7 @@
                 {% endif %}
                 </span>
             </td>   
-            <td>
+            <td border="1">
                 <a href="{% url 'MemberDetails' member.id %}">View</a>
                 <a href="{% url 'EditMember' member.id %}">Edit</a>
             </td>

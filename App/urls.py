@@ -14,7 +14,7 @@ urlpatterns = [
     path('MembershipPage/', views.MembershipPage, name= 'MembershipPage'),
     path('FinancePage/', views.FinancePage, name= 'FinancePage'),
     path('SettingsPage/', views.SettingsPage, name= 'SettingsPage'),
-
+    path("DeleteMember/<int:id>/", views.DeleteMember, name="DeleteMember")
 
     
 ]

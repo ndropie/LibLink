@@ -4,6 +4,27 @@
 
 {% block pagecontent %}
 
+
+{% if error %}
+<div class="warning-overlay">
+    <div class="warning-popup">
+
+        <div class="warning-icon">
+            !
+        </div>
+
+        <h2>Member ID Already Exists</h2>
+
+        <p>{{ error }}</p>
+
+        <a href="{% url 'AddMember' %}" class="warning-btn">
+            Okay
+        </a>
+
+    </div>
+</div>
+{% endif %}
+
 <div class="add-member-header">
 
     <div>
@@ -14,6 +35,12 @@
 </div>
 
 <div class="member-form">
+        {% if error %}
+            <div class="form-error">
+                {{ Error }}
+            </div>
+        {% endif %}
+
     <form method="POST">
         {% csrf_token %}
         <div class="form-group">
@@ -23,8 +50,22 @@
                 id="full-name"
                 name="full_name"
                 placeholder="Enter member name"
+                required
             >
         </div>
+
+        
+        <div class="form-group">
+            <label for="MemberID">Member ID</label>
+            <input
+                type="text"
+                id="MemberID"
+                name="MemberID"
+                placeholder="Enter member ID"
+                required
+            >
+        </div>
+
         <div class="form-group">
             <label for="phone">Phone Number</label>
             <input 
@@ -32,6 +73,7 @@
                 id="phone"
                 name="phone"
                 placeholder="Enter phone number"
+                required
             >
         </div>   
         <div class="form-group"> 
@@ -49,6 +91,7 @@
                 type="date"
                 id="date-of-birth"
                 name="date_of_birth"
+                required
             >
         </div>
         <div class="form-group"> 
@@ -66,6 +109,7 @@
                 type="date"
                 id="joined-date"
                 name="joined_date"
+                required
             >
         </div>
 
