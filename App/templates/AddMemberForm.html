@@ -5,6 +5,24 @@
 {% block pagecontent %}
 
 
+{% if form_error %}
+    <div class="warning-popup">
+
+        <div class="warning-icon">
+            !
+        </div>
+
+        <h2>Something Went Wrong </h2>
+
+        <p> {{ form_error }}</p>
+
+        <a href="{% url 'AddMember' %}" class="warning-btn">
+            Okay
+        </a>
+
+    </div>
+{% endif %}
+
 {% if error %}
 <div class="warning-overlay">
     <div class="warning-popup">

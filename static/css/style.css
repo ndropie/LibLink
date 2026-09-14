@@ -1000,3 +1000,108 @@ STAT CARD
 .warning-btn:hover {
     background: var(--primary-hover);
 }
+
+/* =========================================================
+   MEMBERSHIP PLANS PAGE
+========================================================= */
+
+.membership-plans-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.membership-plans-header h1 {
+    font-size: 30px;
+    color: var(--text-primary);
+}
+
+.membership-plans-header p {
+    margin-top: 4px;
+    color: var(--text-muted);
+    font-size: 14px;
+}
+
+
+/* =========================================================
+   MEMBERSHIP PLANS TABLE
+========================================================= */
+
+.membership-plans-table {
+    background: var(--surface-card);
+    border: 1px solid var(--border);
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.membership-plans-table table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.membership-plans-table th {
+    padding: 15px;
+    text-align: left;
+    color: var(--text-primary);
+    font-size: 13px;
+    font-weight: 600;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+}
+
+.membership-plans-table td {
+    padding: 15px;
+    color: var(--text-secondary);
+    font-size: 14px;
+    border-bottom: 1px solid var(--border);
+}
+
+.membership-plans-table tbody tr:hover {
+    background: var(--surface-hover);
+}
+
+.membership-plans-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+
+/* =========================================================
+   MEMBERSHIP PLAN STATUS
+========================================================= */
+
+.status-active {
+    color: var(--success);
+    font-weight: 600;
+}
+
+.status-inactive {
+    color: var(--danger);
+    font-weight: 600;
+}
+
+
+/* =========================================================
+   MEMBERSHIP PLAN ACTION
+========================================================= */
+
+.membership-plans-table td a {
+    color: var(--primary-light);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.membership-plans-table td a:hover {
+    color: var(--white);
+}
+
+
+/* =========================================================
+   EMPTY STATE
+========================================================= */
+
+.membership-plans-table td[colspan="5"] {
+    text-align: center;
+    padding: 30px;
+    color: var(--text-muted);
+}

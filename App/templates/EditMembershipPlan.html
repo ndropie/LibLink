@@ -1,0 +1,155 @@
+{% extends 'base.html' %}
+
+{% block pagetitle %}
+    Edit Membership Plan
+{% endblock %}
+
+{% block pagecontent %}
+
+<div class="edit-plan-header">
+
+    <div>
+        <h1>Edit Membership Plan</h1>
+        <p>Update membership plan information</p>
+    </div>
+
+    <a href="{% url 'MembershipPlans' %}" class="secondary-btn">
+        Cancel
+    </a>
+
+</div>
+
+
+<form
+    method="POST"
+    class="edit-plan-form"
+    onsubmit="return confirm('Are you sure you want to save these changes?');"
+>
+    {% csrf_token %}
+
+    <div class="edit-form-grid">
+
+        <div class="form-group">
+
+            <label for="plan_name">
+                Plan Name
+            </label>
+
+            <input
+                type="text"
+                id="plan_name"
+                name="plan_name"
+                value="{{ plan.Plan_Name }}"
+                required
+            >
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label for="duration">
+                Duration (Days)
+            </label>
+
+            <input
+                type="number"
+                id="duration"
+                name="duration"
+                value="{{ plan.Duration }}"
+                min="1"
+                required
+            >
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label for="plan_price">
+                Plan Price (₹)
+            </label>
+
+            <input
+                type="number"
+                id="plan_price"
+                name="plan_price"
+                value="{{ plan.Plan_price }}"
+                min="0"
+                required
+            >
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label>Status</label>
+
+            <div class="radio-group">
+
+                <label>
+                    <input
+                        type="radio"
+                        name="plan_status"
+                        value="True"
+                        {% if plan.Plan_Status %}checked{% endif %}
+                    >
+                    Active
+                </label>
+
+                <label>
+                    <input
+                        type="radio"
+                        name="plan_status"
+                        value="False"
+                        {% if not plan.Plan_Status %}checked{% endif %}
+                    >
+                    Inactive
+                </label>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="form-actions">
+
+        <button
+            type="button"
+            class="danger-btn"
+            onclick="if(confirm('Are you sure you want to delete this membership plan? This action cannot be undone.')) { document.getElementById('delete-plan-form').submit(); }"
+        >
+            Delete Plan
+        </button>
+
+
+        <div class="form-actions-right">
+
+            <a href="{% url 'MembershipPlans' %}" class="secondary-btn">
+                Cancel
+            </a>
+
+            <button type="submit" class="primary-btn">
+                Save Changes
+            </button>
+
+        </div>
+
+    </div>
+
+</form>
+
+
+<form
+    method="POST"
+    action="{% url 'DeleteMembershipPlan' plan.id %}"
+    id="delete-plan-form"
+    style="display: none;"
+>
+    {% csrf_token %}
+</form>
+
+{% endblock %}

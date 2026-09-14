@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% block pagetitle %}Membership Plans{% endblock %}
+
+{% block pagecontent %}
+
+<div class="membership-plans-header">
+
+    <div>
+        <h1>Membership Plans</h1>
+        <p>Manage membership plans</p>
+    </div>
+
+    <a href="{% url 'AddMembershipPlan' %}" class="primary-btn">
+        Add Plan
+    </a>
+
+</div>
+
+
+<div class="membership-plans-table">
+
+    <table>
+        <thead>
+            <tr>
+                <th>Plan Name</th>
+                <th>Duration</th>
+                <th>Price</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            {% for plan in plans %}
+
+            <tr>
+                <td>{{ plan.Plan_Name }}</td>
+
+                <td>
+                    {% if plan.Duration == 1 %}
+                        1 Day
+                    {% else %}
+                        {{ plan.Duration }} Days
+                    {% endif %}
+                </td>
+
+                <td>
+                    ₹{{ plan.Plan_price }}
+                </td>
+
+                <td>
+                    {% if plan.Plan_Status %}
+                        <span class="status-active">Active</span>
+                    {% else %}
+                        <span class="status-inactive">Inactive</span>
+                    {% endif %}
+                </td>
+
+                <td>
+                    <a href="{% url 'EditMembershipPlan' plan.id %}">Edit</a>
+                </td>
+            </tr>
+
+            {% empty %}
+
+            <tr>
+                <td colspan="5">
+                    No membership plans found.
+                </td>
+            </tr>
+
+            {% endfor %}
+
+        </tbody>
+    </table>
+
+</div>
+
+{% endblock %}

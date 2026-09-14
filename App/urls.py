@@ -5,16 +5,19 @@ from . import views
 urlpatterns = [
     
     path('', views.Dashboard, name= 'Dashboard'),
-    path('SeatManagementPage/', views.SeatManagementPage, name= 'SeatManagementPage'),
     path('MembersPage/', views.MembersPage, name= 'MembersPage'),
     path('MembersPage/AddMember/', views.AddMember, name= 'AddMember'),
-
     path('MembersPage/<int:MemberID>/', views.MemberDetails, name='MemberDetails'),
-    path('EditMember/<int:MemberID>/', views.EditMember, name='EditMember'),
-    path('MembershipPage/', views.MembershipPage, name= 'MembershipPage'),
-    path('FinancePage/', views.FinancePage, name= 'FinancePage'),
+    path('EditMember/<int:MemberID>/', views.EditMember, name='EditMember'),    
+    path("DeleteMember/<int:id>/", views.DeleteMember, name="DeleteMember"),
+
+    path('MembershipPlans/', views.MembershipPlansPage, name='MembershipPlans'),
+    path('MembershipPlans/AddPlan/', views.AddMembershipPlan, name='AddMembershipPlan'),
+    path('EditMembershipPlan/<int:plan_id>/',views.EditMembershipPlan , name='EditMembershipPlan'),
+    path('DeleteMembershipPlan/<int:plan_id>/',views.DeleteMembershipPlan,name='DeleteMembershipPlan'),
+    
+    path('SeatManagementPage/', views.SeatManagementPage, name= 'SeatManagementPage'),
     path('SettingsPage/', views.SettingsPage, name= 'SettingsPage'),
-    path("DeleteMember/<int:id>/", views.DeleteMember, name="DeleteMember")
 
     
 ]

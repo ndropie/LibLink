@@ -26,3 +26,14 @@ class Member(models.Model):
         
     def __str__(self):
         return self.full_name
+
+class MemberShipPlans(models.Model):
+    Plan_Name = models.CharField(max_length=100)
+    Duration  = models.PositiveIntegerField()
+    Plan_price = models.PositiveIntegerField()
+    Plan_Status = models.BooleanField(default=True)
+
+    
+    def __str__(self):
+        return self.Plan_Name
+

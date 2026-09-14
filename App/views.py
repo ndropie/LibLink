@@ -1,14 +1,22 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
-from .models import Member
+from .models import Member, MemberShipPlans
 
+from django.db import connection
 # Create your views here.
-
+'''
+----------------------------------------------------------------------------------
+members module functions 
+----------------------------------------------------------------------------------
+'''
 
 def AddMember(request):
     if request.method == "POST":
 
         member_id = request.POST.get("MemberID") or None
+        print("DATABASE:", connection.settings_dict["NAME"])
+        print("MEMBER ID:", member_id)
+        print("EXISTS:", Member.objects.filter(MemberID=member_id).exists())
 
         if member_id and Member.objects.filter(MemberID=member_id).exists():
             return render(
@@ -26,12 +34,18 @@ def AddMember(request):
         address = request.POST.get("address")
         joined_date = request.POST.get("joined_date")
 
-        if not full_name or not phone or not date_of_birth or not address or not joined_date:
+        if not full_name or not phone or not date_of_birth or not joined_date:
+            print("full_name:", full_name)
+            print("phone:", phone)
+            print("date_of_birth:", date_of_birth)
+            print("address:", address)
+            print("joined_date:", joined_date)
+
             return render(
                 request,
                 "AddMemberForm.html",
                 {
-                    "error": "Please fill in all required fields."
+                    "form_error": "Please fill in all required fields."
                 }
             )
 
@@ -110,8 +124,69 @@ def DeleteMember(request,id):
 
 
 
-def MembershipPage(request):
-    return render(request,"MembershipPage.html")
+'''
+----------------------------------------------------------------------------------
+MembershipPlan module functions 
+----------------------------------------------------------------------------------
+'''
+
+
+
+def MembershipPlansPage(request):
+    plans = MemberShipPlans.objects.all()
+
+    return render(request, 'MembershipPlans.html', {
+        'plans': plans
+    })
+
+
+def AddMembershipPlan(request):
+
+    if request.method == 'POST':
+
+        plan_name = request.POST.get('plan_name')
+        duration = request.POST.get('duration')
+        plan_price = request.POST.get('plan_price')
+
+        MemberShipPlans.objects.create(
+            Plan_Name=plan_name,
+            Duration=duration,
+            Plan_price=plan_price
+        )
+
+        return redirect('MembershipPlans')
+
+    return render(request, 'AddMembershipPlan.html')
+
+def EditMembershipPlan(request, plan_id):
+    plan = MemberShipPlans.objects.get(id=plan_id)
+    if request.method == "POST":
+
+        plan.Plan_Name = request.POST.get("plan_name")
+        plan.Duration = request.POST.get("duration")
+        plan.Plan_price = request.POST.get("plan_price")
+        plan.Plan_Status = request.POST.get("plan_status")
+
+        plan.save()
+        return redirect("MembershipPlans")
+
+    return render(request, "EditMembershipPlan.html", {
+                "plan": plan})
+
+
+
+def DeleteMembershipPlan(request, plan_id):
+
+    plan = MemberShipPlans.objects.get(id=plan_id)
+
+    if request.method == "POST":
+        plan.delete()
+        return redirect("MembershipPlans")
+
+
+
+
+
 
 
 def SeatManagementPage(request):

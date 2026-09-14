@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+
+{% block pagetitle %}
+    Add Membership Plan
+{% endblock %}
+
+{% block pagecontent %}
+
+<div class="add-plan-header">
+
+    <div>
+        <h1>Add Membership Plan</h1>
+        <p>Create a new membership plan</p>
+    </div>
+
+    <a href="{% url 'MembershipPlans' %}" class="secondary-btn">
+        Cancel
+    </a>
+
+</div>
+
+
+<div class="plan-form">
+
+    <form method="POST">
+
+        {% csrf_token %}
+
+        <div class="form-group">
+
+            <label for="plan_name">
+                Plan Name
+            </label>
+
+            <input
+                type="text"
+                id="plan_name"
+                name="plan_name"
+                placeholder="e.g. Monthly"
+                required
+            >
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label for="duration">
+                Duration (Days)
+            </label>
+
+            <input
+                type="number"
+                id="duration"
+                name="duration"
+                placeholder="e.g. 30"
+                min="1"
+                required
+            >
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label for="plan_price">
+                Plan Price (₹)
+            </label>
+
+            <input
+                type="number"
+                id="plan_price"
+                name="plan_price"
+                placeholder="e.g. 800"
+                min="0"
+                required
+            >
+
+        </div>
+
+
+        <div class="form-actions">
+
+            <a href="{% url 'MembershipPlans' %}" class="secondary-btn">
+                Cancel
+            </a>
+
+            <button type="submit" class="primary-btn">
+                Add Plan
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+{% endblock %}
