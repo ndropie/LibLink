@@ -37,3 +37,39 @@ class MemberShipPlans(models.Model):
     def __str__(self):
         return self.Plan_Name
 
+
+
+class Memberships(models.Model):
+    member = models.ForeignKey(Member,on_delete=models.CASCADE, related_name="memberships")
+    plan = models.ForeignKey(MemberShipPlans, on_delete=models.PROTECT)
+    start_date = models.DateField()
+    expiry_date = models.DateField()
+    status = models.BooleanField(default=True)
+
+
+
+class Seat(models.Model):
+    seat_number = models.CharField(max_length=20)
+    status = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.seat_number
+
+class SeatAssignment(models.Model):
+    seat = models.ForeignKey(Seat,on_delete=models.PROTECT,related_name="assignments")
+    member = models.ForeignKey(Member,on_delete=models.CASCADE,related_name="seat_assignments")
+    assigned_date = models.DateField()
+    status = models.BooleanField(default=True)
+
+    def __str__(self):
+        return f"{self.seat.seat_number} - {self.member.full_name}"
+
+
+
+
+class SeatConfiguration(models.Model):
+    rows = models.PositiveIntegerField(default=1)
+    seats_per_row = models.PositiveIntegerField(default=1)
+
+    def __str__(self):
+        return "Seat Configuration"

@@ -8,10 +8,9 @@
 <div class="members-header">
 
     <div>
-        <h1>Members</h1>
+        <h1>Total Members : {{membercount}}</h1>
         <p>Manage library members</p>
-    </div>
-
+    </div>        
     <a href="{% url 'AddMember' %}" class="primary-btn">
         + Add Member
     </a>
@@ -60,8 +59,22 @@
             <td>{{member.MemberID}}</td>
             <td>{{member.full_name}}</td>
             <td>{{member.phone}}</td>
-            <td>Monthly</td>
-            <td>A-12</td>
+            <td>
+                {% with membership=member.memberships.all|first %}
+                    {% if membership and membership.status %}
+                        {{ membership.plan.Plan_Name }}
+                    {% else %}
+                        No Membership
+                    {% endif %}
+                {% endwith %}
+            </td>
+            <td>
+                {% if member.active_seat %}
+                    {{ member.active_seat.seat.seat_number }}
+                {% else %}
+                    No Seat
+                {% endif %}
+            </td>
             <td>
                 {% if member.status %} 
                     <span class="active">

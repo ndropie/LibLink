@@ -16,7 +16,9 @@ urlpatterns = [
     path('EditMembershipPlan/<int:plan_id>/',views.EditMembershipPlan , name='EditMembershipPlan'),
     path('DeleteMembershipPlan/<int:plan_id>/',views.DeleteMembershipPlan,name='DeleteMembershipPlan'),
     
-    path('SeatManagementPage/', views.SeatManagementPage, name= 'SeatManagementPage'),
+    path('SeatManagement/', views.SeatManagementPage, name= 'SeatManagementPage'),
+
+
     path('SettingsPage/', views.SettingsPage, name= 'SettingsPage'),
 
     

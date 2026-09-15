@@ -1,8 +1,154 @@
 {% extends 'base.html' %}
 
-{% block pagetitle %}Settings{% endblock %}
+{% block pagetitle %}Membership Plans{% endblock %}
 
-{% block  pagecontent %}
+{% block pagecontent %}
+<section class="SeatConfiguation">
 
+    <div class="seat-configuration-header">
+
+        <div>
+            <h1>Seat Configuration</h1>
+            <p>Configure the seating layout of your study library</p>
+        </div>
+
+    </div>
+
+    <div class="seat-configuration-card">
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            <div class="form-group">
+
+                <label for="rows">
+                    Number of Rows
+                </label>
+
+                <input
+                    type="number"
+                    id="rows"
+                    name="rows"
+                    min="1"
+                    value="{{ configuration.rows|default:1 }}"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="seats_per_row">
+                    Seats Per Row
+                </label>
+
+                <input
+                    type="number"
+                    id="seats_per_row"
+                    name="seats_per_row"
+                    min="1"
+                    value="{{ configuration.seats_per_row|default:1 }}"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-actions">
+
+                <button
+                    type="submit"
+                    class="primary-btn"
+                >
+                    Save Configuration
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</section>
+
+<br><br>
+<section class="membership">
+    
+<div class="membership-plans-header">
+
+    <div>
+        <h1>Membership Plans</h1>
+        <p>Manage membership plans</p>
+    </div>
+
+    <a href="{% url 'AddMembershipPlan' %}" class="primary-btn">
+        Add Plan
+    </a>
+
+</div>
+
+
+<div class="membership-plans-table">
+
+    <table>
+        <thead>
+            <tr>
+                <th>Plan Name</th>
+                <th>Duration</th>
+                <th>Price</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            {% for plan in plans %}
+
+            <tr>
+                <td>{{ plan.Plan_Name }}</td>
+
+                <td>
+                    {% if plan.Duration == 1 %}
+                        1 Day
+                    {% else %}
+                        {{ plan.Duration }} Days
+                    {% endif %}
+                </td>
+
+                <td>
+                    ₹{{ plan.Plan_price }}
+                </td>
+
+                <td>
+                    {% if plan.Plan_Status %}
+                        <span class="status-active">Active</span>
+                    {% else %}
+                        <span class="status-inactive">Inactive</span>
+                    {% endif %}
+                </td>
+
+                <td>
+                    <a href="{% url 'EditMembershipPlan' plan.id %}">Edit</a>
+                </td>
+            </tr>
+
+            {% empty %}
+
+            <tr>
+                <td colspan="5">
+                    No membership plans found.
+                </td>
+            </tr>
+
+            {% endfor %}
+
+        </tbody>
+    </table>
+
+</div>
+</section>
 
 {% endblock %}

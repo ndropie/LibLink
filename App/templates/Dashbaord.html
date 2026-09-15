@@ -1,83 +1,175 @@
 {% extends 'base.html' %}
 
 {% block pagetitle %}
-    Dashbaord
+    Dashboard
 {% endblock %}
 
+{% block pagecontent %}
 
-{% block  pagecontent %}
+<div class="dashboard-header">
+    <h1>Dashboard</h1>
+    <p>Library overview</p>
+</div>
 
-         <div class="dashboard-header">
-            <h1>Dashboard</h1>
-            <p>Library overview</p>
-        </div>
+<section class="dashboard-a1">
 
-    <section class="dashboard-a1">
-        <!-- stats cards -->
+    <div class="stats">
 
-        <div class="stats">
-            <a href="{% url 'SeatManagementPage'%}">
+        <a href="{% url 'SeatManagementPage' %}">
             <div class="stat-card">
-                <h3>Available Seats</h3>
-                <p>0</p>
-            </div></a>
-            
-            <a href="{% url 'SeatManagementPage'%}">
+                <h3>Total Seats</h3>
+                <p>{{ total_seats }}</p>
+            </div>
+        </a>
+
+        <a href="{% url 'SeatManagementPage' %}">
             <div class="stat-card">
                 <h3>Occupied Seats</h3>
-                <p>0</p>
-            </div></a>
-            
-            
-            <a href="{% url 'SeatManagementPage'%}">
+                <p>{{ occupied_seats }}</p>
+            </div>
+        </a>
+
+        <a href="{% url 'SeatManagementPage' %}">
             <div class="stat-card">
                 <h3>Vacant Seats</h3>
-                <p>0</p>
-            </div></a>
-
-
-
-            
-            <div class="stat-card">
-                <h3>Today's Birthdays</h3>
-                <ul>
-
-                    <li></li>
-                </ul>
+                <p>{{ vacant_seats }}</p>
             </div>
+        </a>
 
-            <a href="{% url 'MembersPage'%}">
+        <div class="stat-card">
+            <h3>Today's Birthdays</h3>
+
+            <ul>
+                {% for person in birthdays %}
+                    <li type="none">{{ person.full_name }}</li>
+                {% empty %}
+                    <li type="none">No birthdays today</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <a href="{% url 'MembersPage' %}">
             <div class="stat-card">
                 <h3>Total Members</h3>
-                <p>0</p>
-            </div></a>
+                <p>{{ total_members }}</p>
+            </div>
+        </a>
+
+    </div>
+
+</section>
+
+<section class="dashboard-a2">
+
+    <div class="dashboard-seat-map-card">
+
+        <div class="dashboard-seat-map-header">
+            <div>
+                <h2>Seat Map</h2>
+                <p>Current seating status</p>
+            </div>
+
+            <a href="{% url 'SeatManagementPage' %}" class="secondary-btn">
+                Manage Seats
+            </a>
         </div>
-        <!-- today's birthdays -->
-    </section>
 
-    <section class="dashboard-a2">
-        <!-- seat map -->
-         
-         
-    </section>
+        <div class="dashboard-seat-map">
 
-    <section class="dashboard-b1">
-        <!-- chart 1 -->
-    </section>
+            {% for seat in seats %}
 
-    <section class="dashboard-b2">
-        <!-- chart 2 -->
-    </section>
-
-    <section class="dashboard-b3">
-        <!-- chart 3 -->
-    </section>
-
-    <section class="dashboard-c">
-        <!-- recent notifications -->
-    </section>
+                <div class="dashboard-seat">
 
 
-</div>
+                    {% if seat.state == "expired" %}
+
+                    <div class="dashboard-seat-icon expired">
+                        {{ seat.seat_number }}
+                    </div>
+
+                    {% elif seat.state == "occupied" %}
+
+                        <div class="dashboard-seat-icon occupied">
+                            {{ seat.seat_number }}
+                        </div>
+
+                    {% else %}
+
+                        <div class="dashboard-seat-icon vacant">
+                            {{ seat.seat_number }}
+                        </div>
+
+                    {% endif %}
+
+                    {% if seat.assignment %}
+                        <small>{{ seat.assignment.member.full_name }}</small>
+                    {% else %}
+                        <small>Vacant</small>
+                    {% endif %}
+
+                </div>
+
+            {% empty %}
+
+                <p>No seats configured.</p>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+</section>
+
+<section class="dashboard-b1">
+
+    <div class="membership-overview-card">
+
+        <div class="membership-overview-header">
+            <div>
+                <h2>Membership Overview</h2>
+                <p>Current membership status</p>
+            </div>
+        </div>
+
+        <div class="membership-overview-grid">
+
+            <div class="membership-stat">
+                <span>Active Memberships</span>
+                <strong>{{ active_memberships }}</strong>
+            </div>
+
+            <div class="membership-stat">
+                <span>Expiring in 7 Days</span>
+                <strong>{{ expiring_memberships }}</strong>
+            </div>
+
+            <div class="membership-stat">
+                <span>Expired Memberships</span>
+                <strong>{{ expired_memberships }}</strong>
+            </div>
+
+            <div class="membership-stat">
+                <span>No Active Membership</span>
+                <strong>{{ no_membership }}</strong>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<section class="dashboard-b2">
+    <!-- chart 2 -->
+</section>
+
+<section class="dashboard-b3">
+    <!-- chart 3 -->
+</section>
+
+<section class="dashboard-c">
+    <!-- recent notifications -->
+</section>
 
 {% endblock %}

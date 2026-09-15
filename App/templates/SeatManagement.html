@@ -1,0 +1,434 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block pagetitle %}
+Seat Management
+{% endblock %}
+
+{% block pagecontent %}
+
+<div class="seat-management-header">
+
+    <div>
+        <h1>Seat Management</h1>
+        <p>View and manage study seats</p>
+    </div>
+
+</div>
+
+
+<div class="seat-map-card">
+
+    <div class="seat-map-header">
+
+        <div>
+            <h2>Seat Map</h2>
+            <p>Current seating layout</p>
+        </div>
+
+    </div>
+
+
+    <div class="seat-map">
+
+        {% for row in seat_rows %}
+
+            <div class="seat-row">
+
+                {% for seat in row.seats %}
+
+                    <form method="POST" class="seat-form">
+
+                        {% csrf_token %}
+
+                        <input
+                            type="hidden"
+                            name="seat_id"
+                            value="{{ seat.id }}"
+                        >
+
+                        <button
+                            type="submit"
+                            name="action"
+                            value="select_seat"
+                            class="seat"
+                        >
+
+                            {% if seat.state == "occupied" %}
+
+                                <img
+                                    src="{% static 'icons/seat_orange.png' %}"
+                                    alt="{{ seat.seat_number }}"
+                                >
+
+                            {% elif seat.state == "expired" %}
+
+                                <img
+                                    src="{% static 'icons/seat_red.png' %}"
+                                    alt="{{ seat.seat_number }}"
+                                >
+
+                            {% else %}
+
+                                <img
+                                    src="{% static 'icons/seat_green.png' %}"
+                                    alt="{{ seat.seat_number }}"
+                                >
+
+                            {% endif %}
+
+
+                            <span>
+                                {{ seat.seat_number }}
+                            </span>
+
+
+                            {% if seat.assignment %}
+
+                                <small>
+                                    {{ seat.assignment.member.full_name }}
+                                </small>
+
+                            {% endif %}
+
+                        </button>
+
+                    </form>
+
+                {% endfor %}
+
+            </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+
+{% if selected_seat %}
+
+    <div class="selected-seat-card">
+
+        <h2>
+            Selected Seat: {{ selected_seat.seat_number }}
+        </h2>
+
+
+        {% if selected_seat.assignment %}
+
+            <!-- ================================
+                 OCCUPIED SEAT
+            ================================= -->
+
+            <div class="seat-details-section">
+
+                <h3>Seat Details</h3>
+
+                <div class="seat-details-table">
+
+                    <div class="seat-detail-row">
+
+                        <span>Seat</span>
+
+                        <strong>
+                            {{ selected_seat.seat_number }}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="seat-detail-row">
+
+                        <span>Member</span>
+
+                        <strong>
+                            {{ selected_seat.assignment.member.full_name }}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="seat-detail-row">
+
+                        <span>Assigned Date</span>
+
+                        <strong>
+                            {{ selected_seat.assignment.assigned_date }}
+                        </strong>
+
+                    </div>
+
+
+                    {% if selected_seat.membership %}
+
+                        <div class="seat-detail-row">
+
+                            <span>Membership Plan</span>
+
+                            <strong>
+                                {{ selected_seat.membership.plan.Plan_Name }}
+                            </strong>
+
+                        </div>
+
+
+                        <div class="seat-detail-row">
+
+                            <span>Membership Start</span>
+
+                            <strong>
+                                {{ selected_seat.membership.start_date }}
+                            </strong>
+
+                        </div>
+
+
+                        <div class="seat-detail-row">
+
+                            <span>Membership Expires</span>
+
+                            <strong>
+                                {{ selected_seat.membership.expiry_date }}
+                            </strong>
+
+                        </div>
+
+                    {% else %}
+
+                        <div class="seat-detail-row">
+
+                            <span>Membership</span>
+
+                            <strong>
+                                No active membership
+                            </strong>
+
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+
+            <!-- ================================
+                 SEAT ACTIONS
+            ================================= -->
+
+            <div class="seat-actions">
+
+
+                <!-- CHANGE MEMBER -->
+
+                <form
+                    method="POST"
+                    class="change-member-form"
+                >
+
+                    {% csrf_token %}
+
+                    <input
+                        type="hidden"
+                        name="seat_id"
+                        value="{{ selected_seat.id }}"
+                    >
+
+                    <input
+                        type="hidden"
+                        name="action"
+                        value="change_member"
+                    >
+
+
+                    <div class="change-member-field">
+
+                        <label>
+                            Select New Member
+                        </label>
+
+                        <select
+                            name="member_id"
+                            required
+                        >
+
+                            <option value="">
+                                Select new member
+                            </option>
+
+                            {% for member in members %}
+
+                                <option value="{{ member.id }}">
+                                    {{ member.full_name }}
+                                </option>
+
+                            {% endfor %}
+
+                        </select>
+
+                    </div>
+
+
+                    <button
+                        class="primary-btn"
+                        type="submit"
+                    >
+                        Change Member
+                    </button>
+
+                </form>
+
+
+                <!-- RELEASE SEAT -->
+
+                <form
+                    method="POST"
+                    class="release-seat-form"
+                >
+
+                    {% csrf_token %}
+
+                    <input
+                        type="hidden"
+                        name="seat_id"
+                        value="{{ selected_seat.id }}"
+                    >
+
+                    <input
+                        type="hidden"
+                        name="action"
+                        value="release_seat"
+                    >
+
+
+                    <button
+                        class="danger-btn"
+                        type="submit"
+                    >
+                        Release Seat
+                    </button>
+
+                </form>
+
+            </div>
+
+
+        {% else %}
+
+            <!-- ================================
+                 VACANT SEAT
+            ================================= -->
+
+            <div class="seat-details-section">
+
+                <h3>Seat Details</h3>
+
+                <div class="seat-details-table">
+
+                    <div class="seat-detail-row">
+
+                        <span>Seat</span>
+
+                        <strong>
+                            {{ selected_seat.seat_number }}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="seat-detail-row">
+
+                        <span>Status</span>
+
+                        <strong>
+                            Vacant
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ================================
+                 ASSIGN SEAT
+            ================================= -->
+
+            <form method="POST">
+
+                {% csrf_token %}
+
+                <input
+                    type="hidden"
+                    name="seat_id"
+                    value="{{ selected_seat.id }}"
+                >
+
+                <input
+                    type="hidden"
+                    name="action"
+                    value="assign_seat"
+                >
+
+
+                <div>
+
+                    <label>
+                        Select Member
+                    </label>
+
+                    <select
+                        name="member_id"
+                        required
+                    >
+
+                        <option value="">
+                            Select a member
+                        </option>
+
+                        {% for member in members %}
+
+                            <option value="{{ member.id }}">
+                                {{ member.full_name }}
+                            </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+
+                <div>
+
+                    <label>
+                        Assigned Date
+                    </label>
+
+                    <input
+                        type="date"
+                        name="assigned_date"
+                        required
+                    >
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="primary-btn"
+                >
+                    Assign Seat
+                </button>
+
+            </form>
+
+        {% endif %}
+
+    </div>
+
+{% endif %}
+
+{% endblock %}

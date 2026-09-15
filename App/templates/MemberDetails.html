@@ -164,30 +164,122 @@ View Mode
 
 <div class="member-address-section">
 
-    <span class="info-label">
-        Address
-    </span>
+<span class="info-label">
+    Address
+</span>
 
-    <div class="member-address">
-        {{ member.address }}
-    </div>
+<div class="member-address">
+    {{ member.address }}
+</div>
 
 </div>
 
 
 <div class="member-created">
 
-    <span class="info-label">
-        Registered On
-    </span>
+<span class="info-label">
+    Registered On
+</span>
 
-    <span class="info-value">
-        {{ member.created_at|date:"d M Y, h:i A" }}
-    </span>
+<span class="info-value">
+    {{ member.created_at|date:"d M Y, h:i A" }}
+</span>
+
+</div>
 
 </div>
 
 
-</div>
+
+
+
+
+<div class="member-membership-card">
+
+    <div class="membership-card-header">
+
+        <div>
+            <h2>Membership</h2>
+            <p>Current membership information</p>
+        </div>
+
+        <a href="{% url 'EditMember' member.id %}" class="primary-btn">
+            Assign Membership
+        </a>
+
+    </div>
+
+
+ {% if membership %}
+
+    <div class="membership-info-grid">
+
+        <div class="membership-info-item">
+
+            <span class="info-label">
+                Plan
+            </span>
+
+            <span class="info-value">
+                {{ membership.plan.Plan_Name }}
+            </span>
+
+        </div>
+
+
+        <div class="membership-info-item">
+
+            <span class="info-label">
+                Start Date
+            </span>
+
+            <span class="info-value">
+                {{ membership.start_date|date:"d M Y" }}
+            </span>
+
+        </div>
+
+
+        <div class="membership-info-item">
+
+            <span class="info-label">
+                Expiry Date
+            </span>
+
+            <span class="info-value">
+                {{ membership.expiry_date|date:"d M Y" }}
+            </span>
+
+        </div>
+
+
+        <div class="membership-info-item">
+
+            <span class="info-label">
+                Status
+            </span>
+
+            <span class="info-value member-status active">
+                Active
+            </span>
+
+        </div>
+
+    </div>
+
+{% else %}
+
+    <div class="membership-empty">
+
+        <p>No active membership</p>
+
+        <span>
+            This member does not have an active membership.
+        </span>
+
+    </div>
+
+{% endif %}
+
 
 {% endblock %}

@@ -1,82 +1,51 @@
-/*
-=========================================================
-LIBLINK COLOR SYSTEM
-=========================================================
-*/
+@import url('https://fonts.googleapis.com/css2?family=Fjalla+One&family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+
+/* =========================================================
+   COLOR SYSTEM
+========================================================= */
 :root {
-
-    /* =========================
-       BACKGROUND
-    ========================= */
-
+    /* background */
     --bg-main: #0B0F0E;
     --bg-sidebar: #101513;
     --bg-header: #121816;
 
-
-    /* =========================
-       SURFACES
-    ========================= */
-
+    /* surfaces */
     --surface: #161D1A;
     --surface-card: #1C2521;
     --surface-hover: #252F2B;
     --surface-active: #2D3934;
 
-
-    /* =========================
-       BRAND
-    ========================= */
-
+    /* brand */
     --primary: #10B981;
     --primary-hover: #0EA371;
-
     --primary-light: #34D399;
-
     --white: #FFFFFF;
 
-
-    /* =========================
-       TEXT
-    ========================= */
-
+    /* text */
     --text-primary: #F5F7F6;
     --text-secondary: #C2CCC8;
     --text-muted: #7F8C87;
 
-
-    /* =========================
-       BORDERS
-    ========================= */
-
+    /* borders */
     --border: #27493c;
     --border-light: #35413C;
     --border-primary: #10B981;
 
-
-    /* =========================
-       STATUS
-    ========================= */
-
+    /* status */
     --success: #10B981;
     --warning: #F59E0B;
     --danger: #EF4444;
     --info: #38BDF8;
 
-
-    /* =========================
-       EFFECTS
-    ========================= */
-
+    /* effects */
     --shadow: rgba(0, 0, 0, 0.40);
     --overlay: rgba(255, 255, 255, 0.05);
 }
+
+
 /* =========================================================
-GLOBAL
+   GLOBAL
 ========================================================= */
-
-@import url('https://fonts.googleapis.com/css2?family=Fjalla+One&family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap');
-
 
 * {
     font-family: 'Noto Sans', sans-serif;
@@ -85,15 +54,25 @@ GLOBAL
     box-sizing: border-box;
 }
 
+html,
+body {
+    height: 100%;
+    overflow: hidden;
+}
 
 body {
     background-color: var(--bg-main);
     color: var(--text-primary);
+    min-height: 100vh;
 }
 
 
+.pagecontent {
+    height: calc(100vh - 70px); /* change 70px to your header height */
+    overflow-y: auto;}
+
 /* =========================================================
-APP LAYOUT
+   APP LAYOUT
 ========================================================= */
 
 .app {
@@ -104,78 +83,40 @@ APP LAYOUT
     gap: 5px;
 }
 
-
-/* =========================================================
-LOGO / HEADER
-========================================================= */
-
 .logo {
-    background: linear-gradient(
-        135deg,
-        var(--bg-header),
-        var(--surface),
-        var(--surface-card)
-    );
-    width: 100%;
     grid-column: 1 / -1;
+    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
+    background: linear-gradient(135deg, var(--bg-header), var(--surface), var(--surface-card));
     border-bottom: 2px solid var(--border-primary);
     border-radius: 0 0 15px 15px;
 }
 
-
-.logoimg {
-    width: 200px;   
-}
-
-
-/* =========================================================
-SIDEBAR
-========================================================= */
+.logoimg { width: 200px; }
 
 .links {
     grid-column: 1;
     grid-row: 2;
-    background: linear-gradient(
-        180deg,
-        var(--surface),
-        var(--bg-sidebar)
-    );
+    padding-top: 15px;
+    background: linear-gradient(180deg, var(--surface), var(--bg-sidebar));
     border-right: 1px solid var(--border);
     border-radius: 15px;
-    padding-top: 15px;
 }
 
-
-.link-logo {
-    width: 24px;
-    height: 24px;
-    margin-right: 10px;
-}
-
-
-.links ul {
-    list-style: none;
-    padding: 0;
-}
-
+.links ul { list-style: none; }
 
 .links a {
-
-    text-decoration: none;
     display: flex;
     align-items: center;
     padding: 15px;
     margin: 5px;
     color: var(--text-primary);
+    text-decoration: none;
     border-radius: 12px;
-    transition: background 0.2s ease,
-        color 0.2s ease,
-        transform 0.2s ease;
+    transition: background .2s ease, color .2s ease, transform .2s ease;
 }
-
 
 .links a:hover {
     background: var(--overlay);
@@ -183,412 +124,144 @@ SIDEBAR
     transform: translateX(3px);
 }
 
-
-/* =========================================================
-MAIN CONTENT
-========================================================= */
-
-
-
-/* =========================================================
-DASHBOARD
-========================================================= */
-
 main {
+    grid-column: 2;
+    grid-row: 2;
     margin-top: 5px;
     padding: 20px;
-    grid-column: 2;
-    grid-row: 2;
     background-color: var(--surface);
-    border-radius: 15px;
     border: 1px solid var(--border);
-}
-
-.dashboard-grid div {
-    border: 2px solid red;
-}
-
-/* =========================================================
-   DASHBOARD GRID
-========================================================= */
-
-.dashboard-grid {
-    display: grid;
-
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: auto auto auto;
-
-    gap: 20px;
-}
-
-
-/* =========================================================
-   DASHBOARD AREAS
-========================================================= */
-
-.dashboard-header {
-    margin-bottom: 20px;
-}
-
-.dashboard-header h1 {
-    color: var(--text-primary);
-    font-size: 30px;
-    font-weight: 700;
-}
-
-.dashboard-header p {
-    color: var(--text-muted);
-    font-size: 14px;
-    margin-top: 4px;
-}
-
-.dashboard-a1{
-    grid-column: 1 / 3;
-    grid-row: 1;
-}
-
-
-.dashboard-a2 {
-    grid-column: 3;
-    grid-row: 1;
-}
-
-.dashboard-b1 {
-    grid-column: 1;
-    grid-row: 2;
-}
-
-
-.dashboard-b2 {
-    grid-column: 2;
-    grid-row: 2;
-}
-
-
-.dashboard-b3 {
-    grid-column: 3;
-    grid-row: 2;
-}
-
-
-.dashboard-c {
-    grid-column: 1 / 4;
-    grid-row: 3;
-}
-
-
-
-.stats {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 15px;
-}
-
-
-.stats a {
-    text-decoration: none;
-}
-
-
-/* =========================================================
-STAT CARD
-========================================================= */
-
-.stat-card {
-
-    background: var(--surface-card);
-    padding: 20px;
     border-radius: 15px;
-    border: 1px solid var(--border);
-    border-right: 1px solid var(--primary);
-    border-bottom: 1px solid var(--primary);
-    transition: 
-        background 0.2s ease,
-        transform 0.2s ease,
-        border-color 0.2s ease;
 }
 
-
-.stat-card:hover {
-
-    background: var(--surface-hover);
-    border-color: var(--border-light);
-    transform: translateY(-3px);
-}
-
-
-
-.stat-card h3 {
-
-    color: var(--text-secondary);
-    font-size: 18px;
-    font-weight: 500;
-}
-
-
-.stat-card p {
-
-    color: var(--primary);
-    font-size: 30px;
-    font-weight: 700;
-    margin-top: 10px;
-}
 
 /* =========================================================
-   BIRTHDAYS
+   SHARED — CARD SURFACES
 ========================================================= */
 
+.stat-card,
+.member-form,
+.edit-member-form,
+.member-details-card,
+.member-membership-card,
+.seat-map-card,
+.members-table,
+.membership-plans-table,
 .birthdays {
     background: var(--surface-card);
     border: 1px solid var(--border);
     border-radius: 15px;
-    padding: 20px;
-    padding: 12px;
-    border-radius: 10px;
-    background: var(--surface);
-    margin-bottom: 10px;
 }
 
-.birthday strong {
-    color: var(--text-primary);
-    font-size: 14px;
-}
+.member-form,
+.edit-member-form,
+.member-membership-card,
+.seat-map-card { padding: 25px; }
 
-.birthdays h2 {
-    color: var(--text-primary);
-    font-size: 18px;
-    margin-bottom: 15px;
-}
+.member-details-card { padding: 28px; }
 
-.birthday p {
-    color: var(--text-muted);
-    font-size: 12px;
-    margin-top: 3px;
-}
+.member-membership-card,
+.seat-map-card { margin-top: 20px; }
+
+.members-table,
+.membership-plans-table { overflow: hidden; }
 
 
 /* =========================================================
-                                            members page
+   SHARED — PAGE HEADERS
 ========================================================= */
-.members-header{
-    display:flex;
+
+.dashboard-header,
+.members-header,
+.edit-member-header,
+.member-details-header,
+.membership-plans-header { margin-bottom: 20px; }
+
+.members-header,
+.edit-member-header,
+.member-details-header,
+.membership-plans-header {
+    display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
 }
 
-.members-header h1{
+.dashboard-header h1,
+.members-header h1,
+.edit-member-header h1,
+.member-details-header h1,
+.membership-plans-header h1 {
+    color: var(--text-primary);
     font-size: 30px;
-    color:var(--text-primary)
+    font-weight: 700;
 }
 
-.members-header p{
+.dashboard-header p,
+.members-header p,
+.edit-member-header p,
+.member-details-header p,
+.membership-plans-header p {
     margin-top: 4px;
-    color:var(--text-muted);
+    color: var(--text-muted);
     font-size: 14px;
-    ;
-}
-/* =========================================================
-                                       MEMBERS TOOLBAR
-========================================================= */
-
-.members-toolbar{
-    display: flex;
-    gap:10px;
-    margin-bottom: 20px;
 }
 
-.member-search{
-    flex:1;
-    padding: 12px 15px;
-    background: var(--surface-card);
-    color:var(--text-primary);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    outline: none;
+.member-details-header { margin-bottom: 24px; }
 
-}
-
-.member-status-filter, .member-plan-filter{
-    
-    padding: 12px 15px ;
-    background:var(--surface-card);
-    color:var(--text-primary);
-    border:1px solid var(--border);
-    border-radius: 10px;
-    outline: none;
-}
-
-.primary-btn{
-    display: inline-flex;
-    align-items: center;
-    justify-content: center ;
-    padding: 10px 16px;
-    background:var(--primary);
-    color: var(--text-primary);
-    text-decoration: none;
-    border-radius: 10px;
+.member-details-header h1 {
+    margin: 0;
+    font-size: 28px;
     font-weight: 600;
-    transition: background 0.2s ease, transform 0.2s ease;
 }
 
-.primary-btn:hover{
-    background:var(--primary-light);
-    transform: translateY(-2px);
-}
 
 /* =========================================================
-   MEMBERS TABLE
-========================================================= */
-.members-table{
-    background: var(--surface-card);
-    border:1px solid var(--border);
-    border-radius: 15px;
-    overflow:hidden;
-}
-
-.members-table table{
-    width: 100%;
-    border-collapse: collapse;
-}
-
-.members-table header{
-    padding: 15px;
-    text-align: left;
-    color:var(--text-primary);
-    font-size: 13px;
-    font-weight: 600;
-    background:var(--surface);
-    border-bottom: 1px solid var(--border);
-}
-
-.members-table td{
-    padding: 15px;
-    color: var(--text-secondary);
-    font-size: 14px;
-    border-bottom: 1px solid var(--border);
-}
-
-.members-table tbody tr:hover{
-    background:var(--surface-hover);
-}
-
-.active{
-    color:var(--success);
-    font-weight: 600;
-}
-.inactive{
-    color:var(--danger);
-    font-weight: 600;
-}
-.members-table td a{
-    color:var(--primary-light);
-    text-decoration: none;
-    margin-right: 12px;
-
-}
-
-.members-table td a:hover{
-    color: var(--white);
-}
-
-/* =========================================================
-   ADD MEMBER FORM
+   SHARED — BUTTONS
 ========================================================= */
 
-.member-form{
-    max-height: 800px;
-    padding: 25px;
-    background:var(--surface-card);
-    border: 1px solid var(--border);
-    border-radius: 15px;
-
-}
-
-.form-group{
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    margin-bottom: 18px;
-
-}
-
-.form-group label{
-    color: var(--text-secondary);
-    font-size: 14px;
-    font-weight: 600;
-}
-.form-group input{
-    padding: 12px 14px;
-    background: var(--surface);
-    color: var(--text-primary);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    outline: none;
-    font-size: 14px;
-
-}
-.form-group textarea {
-    padding: 12px 14px;
-    background: var(--surface);
-    color: var(--text-primary);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    outline: none;
-    font-size: 14px;
-    resize: vertical;
-}
-
-.form-group input:focus,
-.form-group textarea:focus {
-    border-color: var(--border-primary);
-}
-
-/* =========================================================
-                                           FORM ACTIONS
-========================================================= */
-
-.form-actions{
-    display: flex;
-    justify-content: flex-end;
-    gap:10px;
-    margin-top: 15px;
-
-}
-.secondary-btn{
+.primary-btn,
+.secondary-btn,
+.danger-btn,
+.warning-btn,
+.member-details-action a {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     padding: 10px 16px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background .2s ease, color .2s ease, transform .2s ease;
+}
+
+.primary-btn {
+    background: var(--primary);
+    color: var(--text-primary);
+    border: none;
+}
+
+.primary-btn:hover {
+    background: var(--primary-light);
+    transform: translateY(-2px);
+}
+
+.secondary-btn {
     background: var(--surface);
     color: var(--text-secondary);
-    text-decoration: none;
     border: 1px solid var(--border);
-    border-radius: 10px;
-    font-weight: 600;
-    transition: background 0.2s ease, color 0.2s ease;
 }
 
 .secondary-btn:hover {
     background: var(--surface-hover);
     color: var(--text-primary);
 }
-/* =========================================================
-   DANGER BUTTON
-========================================================= */
 
 .danger-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 10px 16px;
     background: transparent;
     color: var(--danger);
     border: 1px solid var(--danger);
-    border-radius: 10px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.2s ease, color 0.2s ease;
 }
 
 .danger-btn:hover {
@@ -596,62 +269,27 @@ STAT CARD
     color: var(--white);
 }
 
-/* =========================================================
-   EDIT MEMBER page style
-========================================================= */
-
-.edit-member-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
+.warning-btn {
+    padding: 10px 24px;
+    background: var(--primary);
+    color: var(--white);
+    border-radius: 8px;
 }
 
-.edit-member-header h1 {
-    font-size: 30px;
-    color: var(--text-primary);
-}
-
-.edit-member-header p {
-    margin-top: 4px;
-    color: var(--text-muted);
-    font-size: 14px;
-}
+.warning-btn:hover { background: var(--primary-hover); }
 
 
 /* =========================================================
-   EDIT MEMBER FORM
+   SHARED — FORM FIELDS
 ========================================================= */
 
-.edit-member-form {
-    padding: 25px;
-    background: var(--surface-card);
-    border: 1px solid var(--border);
-    border-radius: 15px;
-}
-
-.edit-form-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 5px 20px;
-}
-
-.edit-form-grid .form-group {
-    margin-bottom: 18px;
-}
-
-.edit-form-grid .full-width {
-    grid-column: 1 / -1;
-}
-
-
-/* =========================================================
-   EDIT FORM INPUTS
-========================================================= */
-
+.member-search,
+.member-status-filter,
+.member-plan-filter,
+.form-group input,
+.form-group textarea,
 .edit-member-form .form-group input,
 .edit-member-form .form-group textarea {
-    width: 100%;
     padding: 12px 14px;
     background: var(--surface);
     color: var(--text-primary);
@@ -661,26 +299,234 @@ STAT CARD
     font-size: 14px;
 }
 
+.member-search,
+.member-status-filter,
+.member-plan-filter {
+    padding: 12px 15px;
+    background: var(--surface-card);
+}
+
+.member-search { flex: 1; }
+
+.form-group textarea { resize: vertical; }
+
+.edit-member-form .form-group input,
+.edit-member-form .form-group textarea { width: 100%; }
+
+.form-group input:focus,
+.form-group textarea:focus { border-color: var(--border-primary); }
+
 .edit-member-form .form-group input:focus,
 .edit-member-form .form-group textarea:focus {
-    border-color: var(--border-primary);
     box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.08);
 }
 
-.edit-member-form .form-group textarea {
-    resize: vertical;
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 18px;
+}
+
+.form-group label {
+    color: var(--text-secondary);
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 15px;
 }
 
 
 /* =========================================================
-   EDIT FORM ACTIONS
+   SHARED — TABLES
 ========================================================= */
 
-.edit-member-form .form-actions {
+.members-table table,
+.membership-plans-table table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.members-table header,
+.members-table th,
+.membership-plans-table th {
+    padding: 15px;
+    text-align: left;
+    color: var(--text-primary);
+    font-size: 13px;
+    font-weight: 600;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+}
+
+.members-table td,
+.membership-plans-table td {
+    padding: 15px;
+    color: var(--text-secondary);
+    font-size: 14px;
+    border-bottom: 1px solid var(--border);
+}
+
+.members-table tbody tr:hover,
+.membership-plans-table tbody tr:hover { background: var(--surface-hover); }
+
+.membership-plans-table tbody tr:last-child td { border-bottom: none; }
+
+.members-table td a,
+.membership-plans-table td a {
+    color: var(--primary-light);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.members-table td a { margin-right: 12px; }
+
+.members-table td a:hover,
+.membership-plans-table td a:hover { color: var(--white); }
+
+.membership-plans-table td[colspan="5"] {
+    padding: 30px;
+    text-align: center;
+    color: var(--text-muted);
+}
+
+
+/* =========================================================
+   SHARED — STATUS TEXT
+========================================================= */
+
+.active,
+.status-active {
+    color: var(--success);
+    font-weight: 600;
+}
+
+.inactive,
+.status-inactive {
+    color: var(--danger);
+    font-weight: 600;
+}
+
+
+/* =========================================================
+   DASHBOARD
+========================================================= */
+
+/* debug outline — uncomment while working on the grid
+.dashboard-grid div { border: 2px solid red; }
+*/
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: auto auto auto;
+    gap: 20px;
+}
+
+.dashboard-a1 { grid-column: 1 / 3; grid-row: 1; }
+.dashboard-a2 { grid-column: 3;     grid-row: 1; }
+.dashboard-b1 { grid-column: 1;     grid-row: 2; }
+.dashboard-b2 { grid-column: 2;     grid-row: 2; }
+.dashboard-b3 { grid-column: 3;     grid-row: 2; }
+.dashboard-c  { grid-column: 1 / 4; grid-row: 3; }
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+}
+
+.stats a { text-decoration: none; }
+
+.stat-card {
+    padding: 20px;
+    border-right-color: var(--primary);
+    border-bottom-color: var(--primary);
+    transition: background .2s ease, transform .2s ease, border-color .2s ease;
+}
+
+.stat-card:hover {
+    background: var(--surface-hover);
+    border-color: var(--border-light);
+    transform: translateY(-3px);
+}
+
+.stat-card h3 {
+    color: var(--text-secondary);
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.stat-card p {
+    margin-top: 10px;
+    color: var(--primary);
+    font-size: 30px;
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   BIRTHDAYS
+========================================================= */
+
+.birthdays {
+    padding: 12px;
+    margin-bottom: 10px;
+    background: var(--surface);
+    border-radius: 10px;
+}
+
+.birthdays h2 {
+    margin-bottom: 15px;
+    color: var(--text-primary);
+    font-size: 18px;
+}
+
+.birthday strong {
+    color: var(--text-primary);
+    font-size: 14px;
+}
+
+.birthday p {
+    margin-top: 3px;
+    color: var(--text-muted);
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   MEMBERS TOOLBAR
+========================================================= */
+
+.members-toolbar {
     display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+
+/* =========================================================
+   ADD / EDIT MEMBER FORMS
+========================================================= */
+
+.member-form { max-height: 800px; }
+
+.edit-form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5px 20px;
+}
+
+.edit-form-grid .full-width { grid-column: 1 / -1; }
+
+.edit-member-form .form-actions {
     justify-content: space-between;
     align-items: center;
-    margin-top: 15px;
 }
 
 .form-actions-right {
@@ -690,125 +536,56 @@ STAT CARD
 
 
 /* =========================================================
-   Styles of Member Details page
+   MEMBER DETAILS
 ========================================================= */
 
-.member-details-header{
-    display:flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 24px;
-
-}
-.member-details-header h1{
-    margin: 0px;
-    font-size: 28px;
-    font-weight: 600;
-    color: var(--text-primary);
-
-}
-
-.member-details-header p{
-    margin-top: 4px;
-    color: var(--text-muted);
-    font-size: 14px;
-
-}
-
-.member-details-action{
+.member-details-action {
     display: flex;
     align-items: center;
-    gap:10px;
-}
-.member-details-action a{
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-
-    padding: 10px 16px;
-    border-radius: 10px;
-    
-    text-decoration: none;
-    font-size: 14px;
-    font-weight: 600;
-
-    transition: 
-        bakground 0.2 ease,
-        color 0.2 ease,
-        transfrom 0.2 ease;
-
+    gap: 10px;
 }
 
-.member-details-card {
-    background: var(--surface-card);
-
-    border: 1px solid var(--border);
-    border-radius: 15px;
-
-    padding: 28px;
-}
-
-.member-profile{
+.member-profile {
     display: flex;
     align-items: center;
     gap: 16px;
-
     padding-bottom: 24px;
     border-bottom: 1px solid var(--border);
-
 }
 
-.member-avatar{
+.member-avatar {
     width: 58px;
     height: 58px;
-
+    flex-shrink: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-
-    flex-shrink: 0;
-    
-    border-radius: 50%;
-    background:var(--surface);
+    background: var(--surface);
     border: 1px solid var(--primary);
-
+    border-radius: 50%;
     color: var(--primary);
-
     font-size: 22px;
     font-weight: 700;
 }
 
 .member-profile h2 {
     margin: 0 0 7px;
-
     color: var(--text-primary);
-
     font-size: 21px;
     font-weight: 600;
 }
 
-
 .member-status {
     display: inline-flex;
     align-items: center;
-
     padding: 4px 9px;
-
     border-radius: 6px;
-
     font-size: 12px;
     font-weight: 600;
 }
 
-.member-status.active {
-    background: rgba(16, 185, 129, 0.12);
-    color: var(--success);
-}
-
-.member-status.inactive {
-    background: rgba(239, 68, 68, 0.12);
-    color: var(--danger);
-}
+.member-status.active   { background: rgba(16, 185, 129, 0.12); }
+.member-status.inactive { background: rgba(239, 68, 68, 0.12); }
 
 .member-info-grid {
     display: grid;
@@ -821,153 +598,198 @@ STAT CARD
     border-bottom: 1px solid var(--border);
 }
 
-
-/* Vertical divider */
-
-.member-info-item:nth-child(odd) {
-    border-right: 1px solid var(--border);
-}
-
+.member-info-item:nth-child(odd) { border-right: 1px solid var(--border); }
 
 .info-label {
     display: block;
-
     margin-bottom: 7px;
-
     color: var(--text-muted);
-
     font-size: 12px;
     font-weight: 600;
-
     text-transform: uppercase;
     letter-spacing: 0.04em;
 }
 
 .info-value {
     display: block;
-
     color: var(--text-secondary);
-
     font-size: 14px;
     font-weight: 500;
-
     word-break: break-word;
 }
 
 .member-address-section {
     margin-top: 24px;
-
     padding: 20px;
-
     background: var(--surface);
-
     border: 1px solid var(--border);
     border-radius: 10px;
 }
+
 .member-address {
     color: var(--text-secondary);
-
     font-size: 14px;
     line-height: 1.6;
 }
-
 
 .member-created {
     display: flex;
     justify-content: space-between;
     align-items: center;
-
     margin-top: 22px;
     padding-top: 18px;
-
     border-top: 1px solid var(--border);
 }
 
 
-@media (max-width: 700px) {
-
-    .member-details-header {
-        flex-direction: column;
-        align-items: flex-start;
-
-        gap: 16px;
-    }
-
-    .member-details-actions {
-        width: 100%;
-    }
-
-    .member-details-actions a {
-        flex: 1;
-    }
-
-    .member-details-card {
-        padding: 20px;
-    }
-
-    .member-info-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .member-info-item:nth-child(odd) {
-        border-right: none;
-    }
-
-    .member-created {
-        flex-direction: column;
-        align-items: flex-start;
-
-        gap: 6px;
-    }
-}
-
 /* =========================================================
-   Error warning
+   MEMBERSHIP CARD
 ========================================================= */
 
+.membership-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.membership-card-header h2 {
+    color: var(--text-primary);
+    font-size: 20px;
+}
+
+.membership-card-header p {
+    margin-top: 4px;
+    color: var(--text-muted);
+    font-size: 14px;
+}
+
+.membership-empty {
+    padding: 25px;
+    text-align: center;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+}
+
+.membership-empty p {
+    margin-bottom: 5px;
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.membership-empty span {
+    color: var(--text-muted);
+    font-size: 14px;
+}
+
+
+/* =========================================================
+   SEAT MAP
+========================================================= */
+
+.seat-map-header { margin-bottom: 25px; }
+
+.seat-map-header h2 {
+    color: var(--text-primary);
+    font-size: 20px;
+}
+
+.seat-map-header p {
+    margin-top: 4px;
+    color: var(--text-muted);
+    font-size: 14px;
+}
+
+.seat-map {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+}
+
+.seat-row {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.seat {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+
+.seat:focus {
+    outline: none;
+}
+.seat img {
+    display: block;
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+}
+
+.seat span {
+    display: block;
+    color: var(--text-secondary);
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.seat small {
+    display: block;
+    max-width: 110px;
+    color: var(--text-muted);
+    font-size: 11px;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;}
+
+
+
+/* =========================================================
+   WARNING POPUP
+========================================================= */
 
 .warning-overlay {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-
-    background: rgba(0, 0, 0, 0.65);
-
+    inset: 0;
+    z-index: 9999;
     display: flex;
     align-items: center;
     justify-content: center;
-
-    z-index: 9999;
+    background: rgba(0, 0, 0, 0.65);
 }
 
 .warning-popup {
     width: 400px;
     padding: 30px;
-
+    text-align: center;
     background: var(--surface-card);
     border: 1px solid var(--border-light);
     border-radius: 14px;
-
-    text-align: center;
-
     box-shadow: 0 10px 40px var(--shadow);
 }
 
 .warning-icon {
     width: 50px;
     height: 50px;
-
     margin: 0 auto 15px;
-
     display: flex;
     align-items: center;
     justify-content: center;
-
     border: 2px solid var(--warning);
     border-radius: 50%;
-
     color: var(--warning);
     font-size: 28px;
     font-weight: bold;
@@ -983,125 +805,349 @@ STAT CARD
     color: var(--text-secondary);
 }
 
-.warning-btn {
-    display: inline-flex;
 
-    padding: 10px 24px;
+/* =========================================================
+   RESPONSIVE
+========================================================= */
 
-    background: var(--primary);
-    color: var(--white);
+@media (max-width: 700px) {
 
-    border-radius: 8px;
+    .member-details-header,
+    .member-created {
+        flex-direction: column;
+        align-items: flex-start;
+    }
 
-    text-decoration: none;
-    font-weight: 600;
-}
+    .member-details-header { gap: 16px; }
+    .member-created { gap: 6px; }
 
-.warning-btn:hover {
-    background: var(--primary-hover);
+    .member-details-action { width: 100%; }
+    .member-details-action a { flex: 1; }
+
+    .member-details-card { padding: 20px; }
+
+    .member-info-grid { grid-template-columns: 1fr; }
+    .member-info-item:nth-child(odd) { border-right: none; }
 }
 
 /* =========================================================
-   MEMBERSHIP PLANS PAGE
+   SELECTED SEAT
 ========================================================= */
 
-.membership-plans-header {
+/* =========================================================
+   SEAT DETAILS TABLE
+========================================================= */
+
+.seat-details-section {
+    margin-top: 10px;
+}
+
+.seat-details-section h3 {
+    color: var(--text-primary);
+    font-size: 16px;
+    margin-bottom: 15px;
+}
+
+.seat-details-table {
+    width: 100%;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.seat-detail-row {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    min-height: 48px;
+    border-bottom: 1px solid var(--border);
+}
+
+.seat-detail-row:last-child {
+    border-bottom: none;
+}
+
+.seat-detail-row span {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    padding: 12px 16px;
+    background: var(--surface);
+    color: var(--text-muted);
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.seat-detail-row strong {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    background: var(--surface-card);
+    color: var(--text-primary);
+    font-size: 14px;
+    font-weight: 500;
+}
+
+
+.selected-seat-card {
+    margin-top: 20px;
+    padding: 25px;
+    background: var(--surface-card);
+    border: 1px solid var(--border);
+    border-radius: 15px;
+}
+
+.selected-seat-card h2 {
+    color: var(--text-primary);
+    font-size: 20px;
     margin-bottom: 20px;
 }
 
-.membership-plans-header h1 {
-    font-size: 30px;
+.selected-seat-card h3 {
+    color: var(--text-primary);
+    font-size: 16px;
+    margin-bottom: 18px;
+}
+
+.selected-seat-card p {
+    margin-bottom: 12px;
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+.selected-seat-card strong {
     color: var(--text-primary);
 }
 
-.membership-plans-header p {
+
+/* =========================================================
+   SELECTED SEAT — FORMS
+========================================================= */
+
+.selected-seat-card form {
+    margin-top: 20px;
+}
+
+.selected-seat-card label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--text-secondary);
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.selected-seat-card select,
+.selected-seat-card input[type="date"] {
+    width: 100%;
+    max-width: 320px;
+    padding: 12px 14px;
+    background: var(--surface);
+    color: var(--text-primary);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    outline: none;
+    font-size: 14px;
+}
+
+.selected-seat-card select:focus,
+.selected-seat-card input[type="date"]:focus {
+    border-color: var(--border-primary);
+}
+
+/* =========================================================
+   SEAT ACTIONS
+========================================================= */
+
+.seat-actions {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 20px;
+    margin-top: 25px;
+}
+
+.change-member-form {
+    display: flex;
+    align-items: flex-end;
+    gap: 12px;
+    margin-top: 0;
+}
+
+.change-member-field {
+    display: flex;
+    flex-direction: column;
+}
+
+.change-member-field label {
+    margin-bottom: 8px;
+    color: var(--text-secondary);
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.change-member-field select {
+    width: 320px;
+    padding: 10px 14px;
+    background: var(--surface);
+    color: var(--text-primary);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    outline: none;
+    font-size: 14px;
+}
+
+.change-member-field select:focus {
+    border-color: var(--border-primary);
+}
+
+.change-member-form .primary-btn {
+    margin: 0;
+}
+
+.release-seat-form {
+    margin: 0;
+    margin-left: auto;
+}
+
+.release-seat-form .danger-btn {
+    margin: 0;
+}
+
+
+.dashboard-seat-map-card {
+    padding: 25px;
+    background: var(--surface-card);
+    border: 1px solid var(--border);
+    border-radius: 15px;
+}
+
+.dashboard-seat-map-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 25px;
+}
+
+.dashboard-seat-map-header h2 {
+    color: var(--text-primary);
+    font-size: 20px;
+    margin: 0;
+}
+
+.dashboard-seat-map-header p {
     margin-top: 4px;
     color: var(--text-muted);
     font-size: 14px;
 }
 
+.dashboard-seat-map {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    padding: 10px;
+}
 
-/* =========================================================
-   MEMBERSHIP PLANS TABLE
-========================================================= */
+.dashboard-seat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    min-width: 75px;
+}
 
-.membership-plans-table {
+.dashboard-seat-icon {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.dashboard-seat-icon.vacant {
+    background: var(--surface);
+    color: var(--success);
+    border: 1px solid var(--success);
+}
+
+.dashboard-seat-icon.occupied {
+    background: var(--surface);
+    color: var(--warning);
+    border: 1px solid var(--warning);
+}
+
+.dashboard-seat small {
+    max-width: 90px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--text-muted);
+    font-size: 11px;
+    text-align: center;
+}
+
+.membership-overview-card {
+    padding: 25px;
     background: var(--surface-card);
     border: 1px solid var(--border);
     border-radius: 15px;
-    overflow: hidden;
 }
 
-.membership-plans-table table {
-    width: 100%;
-    border-collapse: collapse;
+.membership-overview-header {
+    margin-bottom: 25px;
 }
 
-.membership-plans-table th {
-    padding: 15px;
-    text-align: left;
+.membership-overview-header h2 {
     color: var(--text-primary);
-    font-size: 13px;
-    font-weight: 600;
-    background: var(--surface);
-    border-bottom: 1px solid var(--border);
+    font-size: 20px;
+    margin: 0;
 }
 
-.membership-plans-table td {
-    padding: 15px;
-    color: var(--text-secondary);
-    font-size: 14px;
-    border-bottom: 1px solid var(--border);
-}
-
-.membership-plans-table tbody tr:hover {
-    background: var(--surface-hover);
-}
-
-.membership-plans-table tbody tr:last-child td {
-    border-bottom: none;
-}
-
-
-/* =========================================================
-   MEMBERSHIP PLAN STATUS
-========================================================= */
-
-.status-active {
-    color: var(--success);
-    font-weight: 600;
-}
-
-.status-inactive {
-    color: var(--danger);
-    font-weight: 600;
-}
-
-
-/* =========================================================
-   MEMBERSHIP PLAN ACTION
-========================================================= */
-
-.membership-plans-table td a {
-    color: var(--primary-light);
-    text-decoration: none;
-    font-weight: 500;
-}
-
-.membership-plans-table td a:hover {
-    color: var(--white);
-}
-
-
-/* =========================================================
-   EMPTY STATE
-========================================================= */
-
-.membership-plans-table td[colspan="5"] {
-    text-align: center;
-    padding: 30px;
+.membership-overview-header p {
+    margin-top: 4px;
     color: var(--text-muted);
+    font-size: 14px;
+}
+
+.membership-overview-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+}
+
+.membership-stat {
+    padding: 18px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+}
+
+.membership-stat span {
+    display: block;
+    color: var(--text-muted);
+    font-size: 13px;
+    margin-bottom: 10px;
+}
+
+.membership-stat strong {
+    color: var(--text-primary);
+    font-size: 24px;
+}
+.dashboard-seat-icon.expired {
+    background: var(--surface);
+    color: var(--danger);
+    border: 1px solid var(--danger);
+}
+
+.dashboard-seat-icon.expired {
+    background: var(--surface);
+    color: var(--danger);
+    border: 1px solid var(--danger);
+}
+
+.required {
+    color: var(--danger);
+    margin-left: 3px;
+    font-weight: 700;
 }
