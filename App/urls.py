@@ -11,10 +11,11 @@ urlpatterns = [
     path('EditMember/<int:MemberID>/', views.EditMember, name='EditMember'),    
     path("DeleteMember/<int:id>/", views.DeleteMember, name="DeleteMember"),
 
-    path('MembershipPlans/', views.MembershipPlansPage, name='MembershipPlans'),
     path('MembershipPlans/AddPlan/', views.AddMembershipPlan, name='AddMembershipPlan'),
     path('EditMembershipPlan/<int:plan_id>/',views.EditMembershipPlan , name='EditMembershipPlan'),
     path('DeleteMembershipPlan/<int:plan_id>/',views.DeleteMembershipPlan,name='DeleteMembershipPlan'),
+
+    path('Assign_Membership/', views.Assign_Membership, name="Assign_Membership"),
     
     path('SeatManagement/', views.SeatManagementPage, name= 'SeatManagementPage'),
 

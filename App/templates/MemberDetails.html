@@ -8,7 +8,6 @@ View Mode
 
 <div class="member-details-header">
 
-
 <div>
     <h1>Member Details</h1>
     <p>View member information</p>
@@ -16,21 +15,31 @@ View Mode
 
 <div class="member-details-actions">
 
-    <a href="{% url 'EditMember' member.id %}" class="secondary-btn">
+    <a
+        href="{% url 'EditMember' member.id %}"
+        class="secondary-btn"
+    >
         Edit Member
     </a>
 
-    <a href="{% url 'MembersPage' %}" class="secondary-btn">
+    <a
+        href="{% url 'MembersPage' %}"
+        class="secondary-btn"
+    >
         Back to Members
     </a>
 
 </div>
 
-
 </div>
+
+<!-- =====================================================
+     MEMBER INFORMATION
+===================================================== -->
 
 <div class="member-details-card">
 
+<!-- Member Profile -->
 
 <div class="member-profile">
 
@@ -39,16 +48,23 @@ View Mode
     </div>
 
     <div>
-        <h2>{{ member.full_name }}</h2>
+
+        <h2>
+            {{ member.full_name }}
+        </h2>
 
         {% if member.status %}
+
             <span class="member-status active">
                 Active
             </span>
+
         {% else %}
+
             <span class="member-status inactive">
                 Inactive
             </span>
+
         {% endif %}
 
     </div>
@@ -56,7 +72,11 @@ View Mode
 </div>
 
 
+<!-- Member Information -->
+
 <div class="member-info-grid">
+
+    <!-- Full Name -->
 
     <div class="member-info-item">
 
@@ -69,7 +89,10 @@ View Mode
         </span>
 
     </div>
-    
+
+
+    <!-- Member ID -->
+
     <div class="member-info-item">
 
         <span class="info-label">
@@ -83,6 +106,8 @@ View Mode
     </div>
 
 
+    <!-- Phone -->
+
     <div class="member-info-item">
 
         <span class="info-label">
@@ -95,6 +120,8 @@ View Mode
 
     </div>
 
+
+    <!-- Email -->
 
     <div class="member-info-item">
 
@@ -115,6 +142,8 @@ View Mode
     </div>
 
 
+    <!-- Date of Birth -->
+
     <div class="member-info-item">
 
         <span class="info-label">
@@ -128,6 +157,8 @@ View Mode
     </div>
 
 
+    <!-- Joined Date -->
+
     <div class="member-info-item">
 
         <span class="info-label">
@@ -140,6 +171,8 @@ View Mode
 
     </div>
 
+
+    <!-- Account Status -->
 
     <div class="member-info-item">
 
@@ -162,62 +195,77 @@ View Mode
 </div>
 
 
+<!-- Address -->
+
 <div class="member-address-section">
 
-<span class="info-label">
-    Address
-</span>
+    <span class="info-label">
+        Address
+    </span>
 
-<div class="member-address">
-    {{ member.address }}
-</div>
+    <div class="member-address">
 
-</div>
-
-
-<div class="member-created">
-
-<span class="info-label">
-    Registered On
-</span>
-
-<span class="info-value">
-    {{ member.created_at|date:"d M Y, h:i A" }}
-</span>
-
-</div>
-
-</div>
-
-
-
-
-
-
-<div class="member-membership-card">
-
-    <div class="membership-card-header">
-
-        <div>
-            <h2>Membership</h2>
-            <p>Current membership information</p>
-        </div>
-
-        <a href="{% url 'EditMember' member.id %}" class="primary-btn">
-            Assign Membership
-        </a>
+        {% if member.address %}
+            {{ member.address }}
+        {% else %}
+            —
+        {% endif %}
 
     </div>
 
+</div>
 
- {% if membership %}
+
+<!-- Registered Date -->
+
+<div class="member-created">
+
+    <span class="info-label">
+        Registered On
+    </span>
+
+    <span class="info-value">
+        {{ member.created_at|date:"d M Y, h:i A" }}
+    </span>
+
+</div>
+
+</div>
+
+<!-- =====================================================
+     MEMBERSHIP INFORMATION
+===================================================== -->
+
+<div class="member-membership-card">
+<!-- Membership Header -->
+
+<div class="membership-card-header">
+
+    <div>
+        <h2>Membership</h2>
+        <p>Current membership information</p>
+    </div>
+
+    <a
+        href="{% url 'EditMember' member.id %}"
+        class="secondary-btn"
+    >
+        Edit Membership
+    </a>
+
+</div>
+
+
+{% if membership %}
+
+    <!-- Membership Information -->
 
     <div class="membership-info-grid">
 
         <div class="membership-info-item">
 
             <span class="info-label">
-                Plan
+                Membership Plan
             </span>
 
             <span class="info-value">
@@ -256,16 +304,82 @@ View Mode
         <div class="membership-info-item">
 
             <span class="info-label">
-                Status
+                Amount
             </span>
 
-            <span class="info-value member-status active">
-                Active
+            <span class="info-value">
+                ₹{{ membership.amount }}
+            </span>
+
+        </div>
+
+
+        <div class="membership-info-item">
+
+            <span class="info-label">
+                Payment Status
+            </span>
+
+            <span class="info-value">
+
+                {% if membership.Payment_Status %}
+                    <span class="status-paid">
+                        Paid
+                    </span>
+                {% else %}
+                    <span class="status-pending">
+                        Pending
+                    </span>
+                {% endif %}
+
+            </span>
+
+        </div>
+
+
+        <div class="membership-info-item">
+
+            <span class="info-label">
+                Payment Date
+            </span>
+
+            <span class="info-value">
+
+                {% if membership.Payment_Date %}
+                    {{ membership.Payment_Date|date:"d M Y" }}
+                {% else %}
+                    —
+                {% endif %}
+
+            </span>
+
+        </div>
+
+
+        <div class="membership-info-item">
+
+            <span class="info-label">
+                Membership Status
+            </span>
+
+            <span class="info-value">
+
+                {% if membership.status %}
+                    <span class="member-status active">
+                        Active
+                    </span>
+                {% else %}
+                    <span class="member-status inactive">
+                        Inactive
+                    </span>
+                {% endif %}
+
             </span>
 
         </div>
 
     </div>
+
 
 {% else %}
 
@@ -280,6 +394,8 @@ View Mode
     </div>
 
 {% endif %}
+
+</div>
 
 
 {% endblock %}

@@ -3,6 +3,8 @@ from django.urls import reverse
 from datetime import timedelta, date
 from django.db import connection
 from django.utils import timezone
+from django.db.models import Sum
+
 
 
 from .models import (
@@ -96,28 +98,66 @@ def MembersPage(request):
 
 def MemberDetails(request, MemberID):
 
-    member = Member.objects.get(id=MemberID)
+    member = get_object_or_404(
+        Member,
+        id=MemberID
+    )
 
-    membership = member.memberships.filter(status=True).first()
+    membership = member.memberships.filter(
+        status=True
+    ).first()
 
-    return render(request, 'MemberDetails.html', {
-                        'member': member,
-                        'membership': membership
-    })
-
+    return render(
+        request,
+        'MemberDetails.html',
+        {
+            'member': member,
+            'membership': membership
+        }
+    )
 
 def EditMember(request, MemberID):
-    member = Member.objects.get(id=MemberID)
-    membership = member.memberships.filter(status=True).first()
-    plans = MemberShipPlans.objects.filter(Plan_Status=True)
+
+    member = get_object_or_404(
+        Member,
+        id=MemberID
+    )
+
+    membership = member.memberships.filter(
+        status=True
+    ).first()
+
+    plans = MemberShipPlans.objects.filter(
+        Plan_Status=True
+    )
+
+
+    # ==================================================
+    # POST REQUEST
+    # ==================================================
 
     if request.method == 'POST':
 
-        member_id = request.POST.get("MemberID") or None
+        # --------------------------------------------------
+        # Member Information
+        # --------------------------------------------------
+
+        member_id = request.POST.get(
+            "MemberID"
+        ) or None
+
+
+        # Check duplicate Member ID
 
         if (
-            member_id and Member.objects.filter(MemberID=member_id).exclude(id=member.id).exists()
+            member_id
+            and Member.objects.filter(
+                MemberID=member_id
+            ).exclude(
+                id=member.id
+            ).exists()
         ):
+
             return render(
                 request,
                 "EditMember.html",
@@ -125,55 +165,200 @@ def EditMember(request, MemberID):
                     "member": member,
                     "membership": membership,
                     "plans": plans,
-                    "error": f"Member ID '{member_id}' is already in use."
+                    "error": (
+                        f"Member ID '{member_id}' "
+                        "is already in use."
+                    )
                 }
             )
 
-        member.full_name = request.POST.get("full_name")
+
+        # Update member information
+
+        member.full_name = request.POST.get(
+            "full_name"
+        )
+
         member.MemberID = member_id
-        member.phone = request.POST.get("phone")
-        member.email = request.POST.get("email")
-        member.date_of_birth = request.POST.get("date_of_birth")
-        member.address = request.POST.get("address")
-        member.joined_date = request.POST.get("joined_date")
-        member.status = request.POST.get("status") == "True"
+
+        member.phone = request.POST.get(
+            "phone"
+        )
+
+        member.email = request.POST.get(
+            "email"
+        )
+
+        member.date_of_birth = request.POST.get(
+            "date_of_birth"
+        )
+
+        member.address = request.POST.get(
+            "address"
+        )
+
+        member.joined_date = request.POST.get(
+            "joined_date"
+        )
+
+        member.status = (
+            request.POST.get("status") == "True"
+        )
+
 
         member.save()
 
-        # Membership
-        membership_plan_id = request.POST.get("membership_plan")
-        membership_start_date = request.POST.get("membership_start_date")
 
-        if membership_plan_id and membership_start_date:
+        # --------------------------------------------------
+        # Membership Information
+        # --------------------------------------------------
 
-            plan = MemberShipPlans.objects.get(id=membership_plan_id)
+        membership_plan_id = request.POST.get(
+            "membership_plan"
+        )
 
-            start_date = date.fromisoformat(membership_start_date)
-            expiry_date = start_date + timedelta(days=plan.Duration)
+        membership_start_date = request.POST.get(
+            "membership_start_date"
+        )
+
+        membership_amount = request.POST.get(
+            "membership_amount"
+        )
+
+        payment_status = (
+            request.POST.get("payment_status")
+            == "True"
+        )
+
+        payment_date = (
+            request.POST.get("payment_date")
+            or None
+        )
+
+
+        # ==================================================
+        # ASSIGN / UPDATE MEMBERSHIP
+        # ==================================================
+
+        if (
+            membership_plan_id
+            and membership_start_date
+        ):
+
+            plan = get_object_or_404(
+                MemberShipPlans,
+                id=membership_plan_id
+            )
+
+
+            # Convert start date
+
+            start_date = date.fromisoformat(
+                membership_start_date
+            )
+
+
+            # Calculate expiry date
+
+            expiry_date = (
+                start_date
+                + timedelta(days=plan.Duration)
+            )
+
+
+            # --------------------------------------------------
+            # Existing Membership
+            # --------------------------------------------------
 
             if membership:
+
                 membership.plan = plan
+
                 membership.start_date = start_date
+
                 membership.expiry_date = expiry_date
+
+                membership.amount = membership_amount
+
                 membership.status = True
+
+                membership.Payment_Status = (
+                    payment_status
+                )
+
+
+                # Payment Date
+
+                if payment_status:
+
+                    membership.Payment_Date = (
+                        payment_date
+                    )
+
+                else:
+
+                    membership.Payment_Date = None
+
+
                 membership.save()
 
+
+            # --------------------------------------------------
+            # New Membership
+            # --------------------------------------------------
+
             else:
+
                 Memberships.objects.create(
+
                     member=member,
+
                     plan=plan,
+
                     start_date=start_date,
+
                     expiry_date=expiry_date,
-                    status=True
+
+                    amount=membership_amount,
+
+                    status=True,
+
+                    Payment_Status=payment_status,
+
+                    Payment_Date=(
+                        payment_date
+                        if payment_status
+                        else None
+                    )
+
                 )
+
+
+        # ==================================================
+        # REMOVE MEMBERSHIP
+        # ==================================================
 
         elif not membership_plan_id:
 
             if membership:
+
                 membership.status = False
+
                 membership.save()
 
-        return redirect("MembersPage")
+
+        # --------------------------------------------------
+        # Redirect after successful update
+        # --------------------------------------------------
+
+        return redirect(
+            "MembersPage"
+        )
+
+
+    # ==================================================
+    # GET REQUEST
+    # ==================================================
 
     return render(
         request,
@@ -206,14 +391,6 @@ MembershipPlan module functions
 
 
 
-def MembershipPlansPage(request):
-    plans = MemberShipPlans.objects.all()
-
-    return render(request, 'MembershipPlans.html', {
-        'plans': plans
-    })
-
-
 def AddMembershipPlan(request):
 
     if request.method == 'POST':
@@ -228,7 +405,7 @@ def AddMembershipPlan(request):
             Plan_price=plan_price
         )
 
-        return redirect('MembershipPlans')
+        return redirect('SettingsPage')
 
     return render(request, 'AddMembershipPlan.html')
 
@@ -242,7 +419,7 @@ def EditMembershipPlan(request, plan_id):
         plan.Plan_Status = request.POST.get("plan_status")
 
         plan.save()
-        return redirect("MembershipPlans")
+        return redirect("SettingsPage")
 
     return render(request, "EditMembershipPlan.html", {
                 "plan": plan})
@@ -255,7 +432,7 @@ def DeleteMembershipPlan(request, plan_id):
 
     if request.method == "POST":
         plan.delete()
-        return redirect("MembershipPlans")
+        return redirect("SettingsPage")
 
 
 def update_expired_memberships():
@@ -283,6 +460,164 @@ def update_expired_memberships():
                 member=membership.member,
                 status=True
             ).update(status=False)
+
+
+
+
+
+'''
+----------------------------------------------------------------------------------
+Assign membership module functions 
+----------------------------------------------------------------------------------
+'''
+def Assign_Membership(request):
+
+    members = Member.objects.filter(
+        status=True
+    ).order_by("full_name")
+
+    plans = MemberShipPlans.objects.filter(
+        Plan_Status=True
+    ).order_by("Plan_Name")
+
+
+    # ==================================================
+    # POST REQUEST
+    # ==================================================
+
+    if request.method == 'POST':
+
+        member_id = request.POST.get(
+            "member"
+        )
+
+        plan_id = request.POST.get(
+            "membership_plan"
+        )
+
+        start_date_value = request.POST.get(
+            "membership_start_date"
+        )
+
+        amount = request.POST.get(
+            "membership_amount"
+        )
+
+        payment_status = (
+            request.POST.get("payment_status")
+            == "True"
+        )
+
+        payment_date = (
+            request.POST.get("payment_date")
+            or None
+        )
+
+
+        # --------------------------------------------------
+        # Get Member
+        # --------------------------------------------------
+
+        member = get_object_or_404(
+            Member,
+            id=member_id
+        )
+
+
+        # --------------------------------------------------
+        # Get Membership Plan
+        # --------------------------------------------------
+
+        plan = get_object_or_404(
+            MemberShipPlans,
+            id=plan_id
+        )
+
+
+        # --------------------------------------------------
+        # Calculate Membership Dates
+        # --------------------------------------------------
+
+        start_date = date.fromisoformat(
+            start_date_value
+        )
+
+        expiry_date = (
+            start_date
+            + timedelta(days=plan.Duration)
+        )
+
+
+        # --------------------------------------------------
+        # Create Membership
+        # --------------------------------------------------
+
+        Memberships.objects.create(
+
+            member=member,
+
+            plan=plan,
+
+            start_date=start_date,
+
+            expiry_date=expiry_date,
+
+            amount=amount,
+
+            status=True,
+
+            Payment_Status=payment_status,
+
+            Payment_Date=(
+                payment_date
+                if payment_status
+                else None
+            )
+
+        )
+
+
+        # --------------------------------------------------
+        # Redirect
+        # --------------------------------------------------
+
+        return redirect(
+            "Assign_Membership"
+        )
+
+
+    # ==================================================
+    # RECENT MEMBERSHIPS
+    # ==================================================
+
+    recent_memberships = (
+        Memberships.objects
+        .select_related(
+            "member",
+            "plan"
+        )
+        .order_by("-id")[:10]
+    )
+
+
+    # ==================================================
+    # PAGE
+    # ==================================================
+
+    return render(
+        request,
+        "Assign_Membership.html",
+        {
+            "members": members,
+            "plans": plans,
+            "recent_memberships": recent_memberships
+        }
+    )
+
+
+
+
+
 
 
 '''
@@ -554,73 +889,91 @@ def SettingsPage(request):
         }
     )
 
-
-
-
-
-
 def Dashboard(request):
 
+    # =====================================================
+    # DATE
+    # =====================================================
+
+    today = timezone.localdate()
+
+
+    # =====================================================
+    # UPDATE EXPIRED MEMBERSHIPS
+    # =====================================================
 
     update_expired_memberships()
 
 
-    total_members = Member.objects.all().count()
-    total_seats = Seat.objects.all().count()
-    occupied_seats = Seat.objects.filter(assignments__status=True).count()               
-    vacant_seats = Seat.objects.exclude(assignments__status=True).count()
-    today = timezone.localdate()
+    # =====================================================
+    # MEMBERS
+    # =====================================================
+
+    total_members = Member.objects.count()
+
+    active_members = Member.objects.filter(
+        status=True
+    ).count()
+
+    inactive_members = Member.objects.filter(
+        status=False
+    ).count()
+
+
+    # =====================================================
+    # SEATS
+    # =====================================================
+
+    total_seats = Seat.objects.count()
+
+    occupied_seats = (
+        Seat.objects
+        .filter(
+            assignments__status=True
+        )
+        .distinct()
+        .count()
+    )
+
+    vacant_seats = (
+        total_seats
+        - occupied_seats
+    )
+
+
+    # Occupancy percentage
+
+    if total_seats > 0:
+
+        occupancy_percentage = round(
+            (occupied_seats / total_seats) * 100
+        )
+
+    else:
+
+        occupancy_percentage = 0
+
+
+    # =====================================================
+    # TODAY'S BIRTHDAYS
+    # =====================================================
 
     birthdays = Member.objects.filter(
-    date_of_birth__month=today.month,
-    date_of_birth__day=today.day,
-)
+        date_of_birth__month=today.month,
+        date_of_birth__day=today.day,
+        status=True
+    )
 
-    # seat------------------map
-    seats = Seat.objects.all().order_by("seat_number")
 
-    for seat in seats:
-
-        assignment = SeatAssignment.objects.filter(
-            seat=seat,
-            status=True
-        ).select_related("member").first()
-
-        seat.assignment = assignment
-
-        if assignment:
-
-            membership = assignment.member.memberships.filter(
-                status=True
-            ).first()
-
-            seat.membership = membership
-
-            if membership:
-
-                days_remaining = (
-                    membership.expiry_date - today
-                ).days
-
-                if days_remaining <=7:
-                    seat.state = "expired"
-                else:
-                    seat.state = "occupied"
-
-            else:
-                seat.membership = None
-                seat.state = "occupied"
-
-        else:
-            seat.membership = None
-            seat.state = "vacant"
-
- # Membership Overview
+    # =====================================================
+    # MEMBERSHIP OVERVIEW
+    # =====================================================
 
     active_memberships = Memberships.objects.filter(
         status=True,
         expiry_date__gte=today
     ).count()
+
 
     expiring_memberships = Memberships.objects.filter(
         status=True,
@@ -628,34 +981,190 @@ def Dashboard(request):
         expiry_date__lte=today + timedelta(days=7)
     ).count()
 
+
     expired_memberships = Memberships.objects.filter(
         expiry_date__lt=today
     ).count()
 
-    no_membership = Member.objects.filter(
-        status=True,
-        memberships__isnull=True
-    ).count()
+
+    no_membership = (
+        Member.objects
+        .filter(
+            status=True,
+            memberships__isnull=True
+        )
+        .distinct()
+        .count()
+    )
 
 
+    # =====================================================
+    # PAYMENT OVERVIEW
+    # =====================================================
+
+    paid_amount = (
+        Memberships.objects
+        .filter(
+            Payment_Status=True,
+            Payment_Date__month=today.month,
+            Payment_Date__year=today.year
+        )
+        .aggregate(
+            total=Sum("amount")
+        )["total"]
+        or 0
+    )
 
 
-    
+    pending_amount = (
+        Memberships.objects
+        .filter(
+            Payment_Status=False,
+            status=True
+        )
+        .aggregate(
+            total=Sum("amount")
+        )["total"]
+        or 0
+    )
 
 
-    return render(request,"Dashbaord.html",{
-        "total_members":total_members,
-        "total_seats":total_seats,
-        "occupied_seats":occupied_seats,
-        "vacant_seats":vacant_seats,
-        "birthdays":birthdays,"seats": seats,
-        "seats": seats,
+    # =====================================================
+    # SEAT MAP
+    # =====================================================
 
-        "active_memberships": active_memberships,
-        "expiring_memberships": expiring_memberships,
-        "expired_memberships": expired_memberships,
-        "no_membership": no_membership,
+    seats = (
+        Seat.objects
+        .all()
+        .order_by("seat_number")
+    )
 
 
-    })
+    for seat in seats:
 
+        assignment = (
+            SeatAssignment.objects
+            .filter(
+                seat=seat,
+                status=True
+            )
+            .select_related("member")
+            .first()
+        )
+
+        seat.assignment = assignment
+
+
+        # -------------------------------------------------
+        # VACANT
+        # -------------------------------------------------
+
+        if not assignment:
+
+            seat.membership = None
+            seat.state = "vacant"
+
+            continue
+
+
+        # -------------------------------------------------
+        # MEMBER MEMBERSHIP
+        # -------------------------------------------------
+
+        membership = (
+            assignment.member.memberships
+            .filter(status=True)
+            .first()
+        )
+
+        seat.membership = membership
+
+
+        # -------------------------------------------------
+        # NO MEMBERSHIP
+        # -------------------------------------------------
+
+        if not membership:
+
+            seat.state = "expired"
+
+            continue
+
+
+        # -------------------------------------------------
+        # MEMBERSHIP EXPIRY
+        # -------------------------------------------------
+
+        days_remaining = (
+            membership.expiry_date - today
+        ).days
+
+
+        if days_remaining < 0:
+
+            seat.state = "expired"
+
+        elif days_remaining <= 7:
+
+            seat.state = "expiring"
+
+        else:
+
+            seat.state = "occupied"
+
+
+    # =====================================================
+    # RECENT MEMBERSHIP ASSIGNMENTS
+    # =====================================================
+
+    recent_memberships = (
+        Memberships.objects
+        .select_related(
+            "member",
+            "plan"
+        )
+        .order_by("-id")[:5]
+    )
+
+
+    # =====================================================
+    # DASHBOARD
+    # =====================================================
+
+    return render(
+        request,
+        "Dashbaord.html",
+        {
+
+            # Members
+            "total_members": total_members,
+            "active_members": active_members,
+            "inactive_members": inactive_members,
+
+            # Seats
+            "total_seats": total_seats,
+            "occupied_seats": occupied_seats,
+            "vacant_seats": vacant_seats,
+            "occupancy_percentage": occupancy_percentage,
+
+            # Birthdays
+            "birthdays": birthdays,
+
+            # Membership
+            "active_memberships": active_memberships,
+            "expiring_memberships": expiring_memberships,
+            "expired_memberships": expired_memberships,
+            "no_membership": no_membership,
+
+            # Payments
+            "paid_amount": paid_amount,
+            "pending_amount": pending_amount,
+
+            # Seat Map
+            "seats": seats,
+
+            # Recent activity
+            "recent_memberships": recent_memberships,
+
+        }
+    )

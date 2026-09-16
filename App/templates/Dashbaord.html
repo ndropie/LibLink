@@ -1,78 +1,429 @@
 {% extends 'base.html' %}
 
 {% block pagetitle %}
-    Dashboard
+Dashboard
 {% endblock %}
 
 {% block pagecontent %}
 
+<div class="dashboard-page">
+
+<!-- =================================================
+     HEADER
+================================================= -->
+
 <div class="dashboard-header">
-    <h1>Dashboard</h1>
-    <p>Library overview</p>
-</div>
 
-<section class="dashboard-a1">
+    <div>
 
-    <div class="stats">
+        <h1>
+            Dashboard
+        </h1>
 
-        <a href="{% url 'SeatManagementPage' %}">
-            <div class="stat-card">
-                <h3>Total Seats</h3>
-                <p>{{ total_seats }}</p>
-            </div>
-        </a>
-
-        <a href="{% url 'SeatManagementPage' %}">
-            <div class="stat-card">
-                <h3>Occupied Seats</h3>
-                <p>{{ occupied_seats }}</p>
-            </div>
-        </a>
-
-        <a href="{% url 'SeatManagementPage' %}">
-            <div class="stat-card">
-                <h3>Vacant Seats</h3>
-                <p>{{ vacant_seats }}</p>
-            </div>
-        </a>
-
-        <div class="stat-card">
-            <h3>Today's Birthdays</h3>
-
-            <ul>
-                {% for person in birthdays %}
-                    <li type="none">{{ person.full_name }}</li>
-                {% empty %}
-                    <li type="none">No birthdays today</li>
-                {% endfor %}
-            </ul>
-        </div>
-
-        <a href="{% url 'MembersPage' %}">
-            <div class="stat-card">
-                <h3>Total Members</h3>
-                <p>{{ total_members }}</p>
-            </div>
-        </a>
+        <p>
+            Overview of your study library
+        </p>
 
     </div>
 
+</div>
+
+
+
+<!-- =================================================
+     KEY METRICS
+================================================= -->
+
+<section class="dashboard-metrics">
+
+
+    <!-- MEMBERS -->
+
+    <a
+        href="{% url 'MembersPage' %}"
+        class="dashboard-metric-card"
+    >
+
+        <div class="metric-card-content">
+
+            <span class="metric-label">
+                Total Members
+            </span>
+
+            <strong class="metric-value">
+                {{ total_members }}
+            </strong>
+
+            <span class="metric-description">
+                {{ active_members }} active members
+            </span>
+
+        </div>
+
+        <div class="metric-icon">
+            M
+        </div>
+
+    </a>
+
+
+
+    <!-- SEATS -->
+
+    <a
+        href="{% url 'SeatManagementPage' %}"
+        class="dashboard-metric-card"
+    >
+
+        <div class="metric-card-content">
+
+            <span class="metric-label">
+                Total Seats
+            </span>
+
+            <strong class="metric-value">
+                {{ total_seats }}
+            </strong>
+
+            <span class="metric-description">
+                {{ vacant_seats }} currently vacant
+            </span>
+
+        </div>
+
+        <div class="metric-icon">
+            S
+        </div>
+
+    </a>
+
+
+
+    <!-- OCCUPANCY -->
+
+    <a
+        href="{% url 'SeatManagementPage' %}"
+        class="dashboard-metric-card"
+    >
+
+        <div class="metric-card-content">
+
+            <span class="metric-label">
+                Seat Occupancy
+            </span>
+
+            <strong class="metric-value">
+                {{ occupancy_percentage }}%
+            </strong>
+
+            <span class="metric-description">
+                {{ occupied_seats }} of {{ total_seats }} seats occupied
+            </span>
+
+        </div>
+
+        <div class="metric-icon">
+            %
+        </div>
+
+    </a>
+
+
+
+    <!-- ACTIVE MEMBERSHIPS -->
+
+    <div class="dashboard-metric-card">
+
+        <div class="metric-card-content">
+
+            <span class="metric-label">
+                Active Memberships
+            </span>
+
+            <strong class="metric-value">
+                {{ active_memberships }}
+            </strong>
+
+            <span class="metric-description">
+                Currently valid
+            </span>
+
+        </div>
+
+        <div class="metric-icon">
+            A
+        </div>
+
+    </div>
+
+
 </section>
 
-<section class="dashboard-a2">
 
-    <div class="dashboard-seat-map-card">
 
-        <div class="dashboard-seat-map-header">
+<!-- =================================================
+     MAIN DASHBOARD GRID
+================================================= -->
+
+<section class="dashboard-main-grid">
+
+
+    <!-- =============================================
+         SEAT OVERVIEW
+    ============================================== -->
+
+    <div class="dashboard-panel seat-overview-panel">
+
+
+        <div class="dashboard-panel-header">
+
             <div>
-                <h2>Seat Map</h2>
-                <p>Current seating status</p>
+
+                <h2>
+                    Seat Overview
+                </h2>
+
+                <p>
+                    Current seating availability
+                </p>
+
             </div>
 
-            <a href="{% url 'SeatManagementPage' %}" class="secondary-btn">
+            <a
+                href="{% url 'SeatManagementPage' %}"
+                class="secondary-btn"
+            >
                 Manage Seats
             </a>
+
         </div>
+
+
+        <!-- Occupancy Summary -->
+
+        <div class="seat-summary">
+
+            <div class="seat-summary-main">
+
+                <strong>
+                    {{ occupied_seats }}
+                </strong>
+
+                <span>
+                    Occupied
+                </span>
+
+            </div>
+
+
+            <div class="seat-summary-item">
+
+                <span>
+                    Available
+                </span>
+
+                <strong>
+                    {{ vacant_seats }}
+                </strong>
+
+            </div>
+
+
+            <div class="seat-summary-item">
+
+                <span>
+                    Occupancy
+                </span>
+
+                <strong>
+                    {{ occupancy_percentage }}%
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <!-- Progress -->
+
+        <div class="occupancy-progress">
+
+            <div
+                class="occupancy-progress-bar"
+                style="width: {{ occupancy_percentage }}%;"
+            ></div>
+
+        </div>
+
+
+        <!-- Seat Legend -->
+
+        <div class="seat-status-summary">
+
+            <div>
+
+                <span class="seat-status-dot occupied"></span>
+
+                <span>
+                    Occupied
+                </span>
+
+            </div>
+
+
+            <div>
+
+                <span class="seat-status-dot expiring"></span>
+
+                <span>
+                    Expiring
+                </span>
+
+            </div>
+
+
+            <div>
+
+                <span class="seat-status-dot expired"></span>
+
+                <span>
+                    Expired
+                </span>
+
+            </div>
+
+
+            <div>
+
+                <span class="seat-status-dot vacant"></span>
+
+                <span>
+                    Vacant
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =============================================
+         MEMBERSHIP HEALTH
+    ============================================== -->
+
+    <div class="dashboard-panel membership-health-panel">
+
+
+        <div class="dashboard-panel-header">
+
+            <div>
+
+                <h2>
+                    Membership Health
+                </h2>
+
+                <p>
+                    Current membership status
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="membership-health-grid">
+
+
+            <div class="health-item">
+
+                <span>
+                    Active
+                </span>
+
+                <strong>
+                    {{ active_memberships }}
+                </strong>
+
+            </div>
+
+
+            <div class="health-item warning">
+
+                <span>
+                    Expiring Soon
+                </span>
+
+                <strong>
+                    {{ expiring_memberships }}
+                </strong>
+
+            </div>
+
+
+            <div class="health-item danger">
+
+                <span>
+                    Expired
+                </span>
+
+                <strong>
+                    {{ expired_memberships }}
+                </strong>
+
+            </div>
+
+
+            <div class="health-item">
+
+                <span>
+                    No Membership
+                </span>
+
+                <strong>
+                    {{ no_membership }}
+                </strong>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =============================================
+         SEAT MAP
+    ============================================== -->
+
+    <div class="dashboard-panel dashboard-seat-map-panel">
+
+
+        <div class="dashboard-panel-header">
+
+            <div>
+
+                <h2>
+                    Seat Map
+                </h2>
+
+                <p>
+                    Live seat assignment overview
+                </p>
+
+            </div>
+
+            <a
+                href="{% url 'SeatManagementPage' %}"
+                class="secondary-btn"
+            >
+                View All
+            </a>
+
+        </div>
+
 
         <div class="dashboard-seat-map">
 
@@ -81,17 +432,26 @@
                 <div class="dashboard-seat">
 
 
-                    {% if seat.state == "expired" %}
-
-                    <div class="dashboard-seat-icon expired">
-                        {{ seat.seat_number }}
-                    </div>
-
-                    {% elif seat.state == "occupied" %}
+                    {% if seat.state == "occupied" %}
 
                         <div class="dashboard-seat-icon occupied">
                             {{ seat.seat_number }}
                         </div>
+
+
+                    {% elif seat.state == "expiring" %}
+
+                        <div class="dashboard-seat-icon expiring">
+                            {{ seat.seat_number }}
+                        </div>
+
+
+                    {% elif seat.state == "expired" %}
+
+                        <div class="dashboard-seat-icon expired">
+                            {{ seat.seat_number }}
+                        </div>
+
 
                     {% else %}
 
@@ -101,17 +461,33 @@
 
                     {% endif %}
 
+
                     {% if seat.assignment %}
-                        <small>{{ seat.assignment.member.full_name }}</small>
+
+                        <small>
+                            {{ seat.assignment.member.full_name }}
+                        </small>
+
                     {% else %}
-                        <small>Vacant</small>
+
+                        <small>
+                            Vacant
+                        </small>
+
                     {% endif %}
 
                 </div>
 
+
             {% empty %}
 
-                <p>No seats configured.</p>
+                <div class="dashboard-empty-state">
+
+                    <p>
+                        No seats configured.
+                    </p>
+
+                </div>
 
             {% endfor %}
 
@@ -119,57 +495,218 @@
 
     </div>
 
-</section>
 
-<section class="dashboard-b1">
 
-    <div class="membership-overview-card">
+    <!-- =============================================
+         PAYMENT OVERVIEW
+    ============================================== -->
 
-        <div class="membership-overview-header">
+    <div class="dashboard-panel payment-overview-panel">
+
+
+        <div class="dashboard-panel-header">
+
             <div>
-                <h2>Membership Overview</h2>
-                <p>Current membership status</p>
+
+                <h2>
+                    Payment Overview
+                </h2>
+
+                <p>
+                    Current membership payments
+                </p>
+
             </div>
+
         </div>
 
-        <div class="membership-overview-grid">
 
-            <div class="membership-stat">
-                <span>Active Memberships</span>
-                <strong>{{ active_memberships }}</strong>
+        <div class="payment-summary">
+
+
+            <div class="payment-summary-item">
+
+                <span>
+                    Collected This Month
+                </span>
+
+                <strong>
+                    ₹{{ paid_amount }}
+                </strong>
+
             </div>
 
-            <div class="membership-stat">
-                <span>Expiring in 7 Days</span>
-                <strong>{{ expiring_memberships }}</strong>
+
+            <div class="payment-summary-item">
+
+                <span>
+                    Pending Payments
+                </span>
+
+                <strong>
+                    ₹{{ pending_amount }}
+                </strong>
+
             </div>
 
-            <div class="membership-stat">
-                <span>Expired Memberships</span>
-                <strong>{{ expired_memberships }}</strong>
-            </div>
 
-            <div class="membership-stat">
-                <span>No Active Membership</span>
-                <strong>{{ no_membership }}</strong>
-            </div>
+        </div>
+
+
+        <div class="payment-note">
+
+            Payment collection is based on membership payment records.
 
         </div>
 
     </div>
 
+
+
+    <!-- =============================================
+         BIRTHDAYS
+    ============================================== -->
+
+    <div class="dashboard-panel birthdays-panel">
+
+
+        <div class="dashboard-panel-header">
+
+            <div>
+
+                <h2>
+                    Today's Birthdays
+                </h2>
+
+                <p>
+                    Members celebrating today
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="birthday-list">
+
+            {% for person in birthdays %}
+
+                <div class="birthday-item">
+
+                    <div class="birthday-avatar">
+                        {{ person.full_name|first|upper }}
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            {{ person.full_name }}
+                        </strong>
+
+                        <span>
+                            Birthday today
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+            {% empty %}
+
+                <div class="dashboard-empty-state">
+
+                    <p>
+                        No birthdays today.
+                    </p>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+
+
+    <!-- =============================================
+         RECENT MEMBERSHIP ACTIVITY
+    ============================================== -->
+
+    <div class="dashboard-panel recent-activity-panel">
+
+
+        <div class="dashboard-panel-header">
+
+            <div>
+
+                <h2>
+                    Recent Memberships
+                </h2>
+
+                <p>
+                    Latest membership assignments
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="recent-membership-list">
+
+            {% for membership in recent_memberships %}
+
+                <div class="recent-membership-item">
+
+                    <div>
+
+                        <strong>
+                            {{ membership.member.full_name }}
+                        </strong>
+
+                        <span>
+                            {{ membership.plan.Plan_Name }}
+                        </span>
+
+                    </div>
+
+
+                    <div class="recent-membership-meta">
+
+                        <strong>
+                            ₹{{ membership.amount }}
+                        </strong>
+
+                        <span>
+                            {{ membership.start_date|date:"d M Y" }}
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+            {% empty %}
+
+                <div class="dashboard-empty-state">
+
+                    <p>
+                        No membership activity yet.
+                    </p>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+
 </section>
 
-<section class="dashboard-b2">
-    <!-- chart 2 -->
-</section>
-
-<section class="dashboard-b3">
-    <!-- chart 3 -->
-</section>
-
-<section class="dashboard-c">
-    <!-- recent notifications -->
-</section>
+</div>
 
 {% endblock %}

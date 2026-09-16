@@ -45,6 +45,9 @@ class Memberships(models.Model):
     start_date = models.DateField()
     expiry_date = models.DateField()
     status = models.BooleanField(default=True)
+    amount = models.PositiveIntegerField()
+    Payment_Status = models.BooleanField(default = False)
+    Payment_Date = models.DateField(null=True, blank=True)
 
 
 

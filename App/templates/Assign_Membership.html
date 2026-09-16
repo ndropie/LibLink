@@ -1,0 +1,317 @@
+{% extends 'base.html' %}
+
+{% block pagetitle %}
+    Assign Membership
+{% endblock %}
+
+{% block pagecontent %}
+
+<div class="assign-membership-page">
+
+    <!-- Page Header -->
+    <div class="assign-membership-header">
+        <div>
+            <h1>Assign Membership</h1>
+            <p>Assign a membership plan to a library member</p>
+        </div>
+    </div>
+
+
+    <!-- SECTION 1: ASSIGN MEMBERSHIP -->
+
+    <div class="membership-assignment-section">
+
+        <div class="section-header">
+            <div>
+                <h2>Assign Membership</h2>
+                <p>Select a member and assign a membership plan</p>
+            </div>
+        </div>
+
+
+        <form method="POST" class="membership-assignment-form">
+
+            {% csrf_token %}
+
+            <div class="assignment-form-grid">
+
+                <!-- Member -->
+                <div class="form-group">
+
+                    <label for="member">
+                        Member
+                    </label>
+
+                    <select
+                        id="member"
+                        name="member"
+                        required
+                    >
+                        <option value="">
+                            Select Member
+                        </option>
+
+                        {% for member in members %}
+                            <option value="{{ member.id }}">
+                                {{ member.full_name }}
+                            </option>
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+
+                <!-- Membership Plan -->
+                <div class="form-group">
+
+                    <label for="membership_plan">
+                        Membership Plan
+                    </label>
+
+                    <select
+                        id="membership_plan"
+                        name="membership_plan"
+                        required
+                    >
+                        <option value="">
+                            Select Membership Plan
+                        </option>
+
+                        {% for plan in plans %}
+                            <option value="{{ plan.id }}">
+                                {{ plan.Plan_Name }} - ₹{{ plan.Plan_price }}
+                            </option>
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+
+                <!-- Start Date -->
+                <div class="form-group">
+
+                    <label for="membership_start_date">
+                        Start Date
+                    </label>
+
+                    <input
+                        type="date"
+                        id="membership_start_date"
+                        name="membership_start_date"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- Amount -->
+                <div class="form-group">
+
+                    <label for="membership_amount">
+                        Amount
+                    </label>
+
+                    <input
+                        type="number"
+                        id="membership_amount"
+                        name="membership_amount"
+                        min="0"
+                        placeholder="Enter amount"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- Payment Status -->
+                <div class="form-group">
+
+                    <label>
+                        Payment Status
+                    </label>
+
+                    <div class="payment-toggle">
+
+                        <label for="payment_paid">
+
+                            <input
+                                type="radio"
+                                id="payment_paid"
+                                name="payment_status"
+                                value="True"
+                            >
+
+                            Paid
+
+                        </label>
+
+
+                        <label for="payment_pending">
+
+                            <input
+                                type="radio"
+                                id="payment_pending"
+                                name="payment_status"
+                                value="False"
+                                checked
+                            >
+
+                            Pending
+
+                        </label>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Payment Date -->
+                <div class="form-group">
+
+                    <label for="payment_date">
+                        Payment Date
+                    </label>
+
+                    <input
+                        type="date"
+                        id="payment_date"
+                        name="payment_date"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <!-- Submit -->
+
+            <div class="assignment-form-actions">
+
+                <button
+                    type="submit"
+                    class="primary-btn"
+                >
+                    Assign Membership
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+
+
+    <!-- SECTION 2: RECENT ASSIGNMENTS -->
+
+    <div class="recent-membership-section">
+
+        <div class="section-header">
+            <div>
+                <h2>Recent Membership Assignments</h2>
+                <p>Recently assigned memberships</p>
+            </div>
+        </div>
+
+
+        <div class="membership-table-wrapper">
+
+            <table class="membership-table">
+
+                <thead>
+                    <tr>
+                        <th>Member</th>
+                        <th>Membership Plan</th>
+                        <th>Start Date</th>
+                        <th>Expiry Date</th>
+                        <th>Amount</th>
+                        <th>Payment</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+
+
+                <tbody>
+
+                    {% for membership in recent_memberships %}
+
+                        <tr>
+
+                            <td>
+                                {{ membership.member.full_name }}
+                            </td>
+
+                            <td>
+                                {{ membership.plan.Plan_Name }}
+                            </td>
+
+                            <td>
+                                {{ membership.start_date|date:"d M Y" }}
+                            </td>
+
+                            <td>
+                                {{ membership.expiry_date|date:"d M Y" }}
+                            </td>
+
+                            <td>
+                                ₹{{ membership.amount }}
+                            </td>
+
+                            <td>
+
+                                {% if membership.Payment_Status %}
+                                    <span class="status-paid">
+                                        Paid
+                                    </span>
+                                {% else %}
+                                    <span class="status-pending">
+                                        Pending
+                                    </span>
+                                {% endif %}
+
+                            </td>
+
+                            <td>
+
+                                {% if membership.status %}
+                                    <span class="status-active">
+                                        Active
+                                    </span>
+                                {% else %}
+                                    <span class="status-inactive">
+                                        Inactive
+                                    </span>
+                                {% endif %}
+
+                            </td>
+
+                        </tr>
+
+                    {% empty %}
+
+                        <tr>
+
+                            <td
+                                colspan="7"
+                                class="empty-table"
+                            >
+                                No membership assignments found.
+                            </td>
+
+                        </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

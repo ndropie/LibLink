@@ -1,3 +1,4 @@
+```html
 {% extends 'base.html' %}
 
 {% block pagetitle %}
@@ -7,7 +8,9 @@
 {% block pagecontent %}
 
 {% if error %}
+
 <div class="warning-overlay">
+
     <div class="warning-popup">
 
         <div class="warning-icon">
@@ -23,31 +26,54 @@
         </a>
 
     </div>
+
 </div>
+
 {% endif %}
 
+
 <div class="edit-member-header">
+
     <div>
+
         <h1>Edit Member</h1>
+
         <p>Update member information</p>
+
     </div>
 
-    <a href="{% url 'MemberDetails' member.id%}" class="secondary-btn">
+    <a href="{% url 'MemberDetails' member.id %}" class="secondary-btn">
         Cancel
     </a>
+
 </div>
 
 
-<form 
+
+<form
     method="POST"
     class="edit-member-form"
-    onsubmit="return confirm('Are you sure you want to save these changes?');">
+    onsubmit="return confirm('Are you sure you want to save these changes?');"
+>
+
     {% csrf_token %}
+
+
+    <!-- ========================================= -->
+    <!-- MEMBER INFORMATION -->
+    <!-- ========================================= -->
 
     <div class="edit-form-grid">
 
+
+        <!-- Full Name -->
+
         <div class="form-group">
-            <label for="full_name">Full Name</label>
+
+            <label for="full_name">
+                Full Name
+            </label>
+
             <input
                 type="text"
                 id="full_name"
@@ -55,11 +81,18 @@
                 value="{{ member.full_name }}"
                 required
             >
+
         </div>
 
-        
+
+        <!-- Member ID -->
+
         <div class="form-group">
-            <label for="MemberID">Member ID</label>
+
+            <label for="MemberID">
+                Member ID
+            </label>
+
             <input
                 type="text"
                 id="MemberID"
@@ -67,31 +100,56 @@
                 value="{{ member.MemberID }}"
                 required
             >
+
         </div>
 
+
+        <!-- Phone -->
+
         <div class="form-group">
-            <label for="phone">Phone</label>
+
+            <label for="phone">
+                Phone
+            </label>
+
             <input
                 type="text"
                 id="phone"
                 name="phone"
+                pattern="[0-9]{10}"
                 value="{{ member.phone }}"
                 required
             >
+
         </div>
 
+
+        <!-- Email -->
+
         <div class="form-group">
-            <label for="email">Email</label>
+
+            <label for="email">
+                Email
+            </label>
+
             <input
                 type="email"
                 id="email"
                 name="email"
                 value="{{ member.email }}"
             >
+
         </div>
 
+
+        <!-- Date of Birth -->
+
         <div class="form-group">
-            <label for="date_of_birth">Date of Birth</label>
+
+            <label for="date_of_birth">
+                Date of Birth
+            </label>
+
             <input
                 type="date"
                 id="date_of_birth"
@@ -99,19 +157,35 @@
                 value="{{ member.date_of_birth|date:'Y-m-d' }}"
                 required
             >
+
         </div>
 
+
+        <!-- Address -->
+
         <div class="form-group full-width">
-            <label for="address">Address</label>
+
+            <label for="address">
+                Address
+            </label>
+
             <textarea
                 id="address"
                 name="address"
                 rows="4"
-                >{{ member.address }}</textarea>
+            >{{ member.address }}</textarea>
+
         </div>
 
+
+        <!-- Joined Date -->
+
         <div class="form-group">
-            <label for="joined_date">Joined Date</label>
+
+            <label for="joined_date">
+                Joined Date
+            </label>
+
             <input
                 type="date"
                 id="joined_date"
@@ -119,153 +193,296 @@
                 value="{{ member.joined_date|date:'Y-m-d' }}"
                 required
             >
+
         </div>
 
-                
+
+        <!-- Member Status -->
+
         <div class="form-group">
-            <label>Status</label>
+
+            <label>
+                Status
+            </label>
 
             <div class="radio-group">
+
                 <label>
+
                     <input
                         type="radio"
                         name="status"
-                        value=True
+                        value="True"
                         {% if member.status %}checked{% endif %}
                     >
+
                     Active
+
                 </label>
 
+
                 <label>
+
                     <input
                         type="radio"
                         name="status"
-                        value=False
+                        value="False"
                         {% if not member.status %}checked{% endif %}
                     >
+
                     Inactive
+
                 </label>
+
             </div>
+
         </div>
 
 
     </div>
-    
 
 
-<div class="membership-edit-section">
 
-    <div class="membership-edit-header">
-        <div>
-            <h2>Membership</h2>
-            <p>Assign or update membership for this member</p>
+    <!-- ========================================= -->
+    <!-- MEMBERSHIP -->
+    <!-- ========================================= -->
+
+    <div class="membership-edit-section">
+
+
+        <div class="membership-edit-header">
+
+            <div>
+
+                <h2>Membership</h2>
+
+                <p>
+                    Assign or update membership for this member
+                </p>
+
+            </div>
+
         </div>
-    </div>
 
-    <div class="membership-edit-grid">
 
-        <div class="form-group">
+        <div class="membership-edit-grid">
 
-            <label for="membership_plan">
-                Membership Plan
-            </label>
 
-            <select
-                id="membership_plan"
-                name="membership_plan"
-            >
-                <option value="">
-                    No Membership
-                </option>
+            <!-- Membership Plan -->
 
-                {% for plan in plans %}
+            <div class="form-group">
 
-                    <option
-                        value="{{ plan.id }}"
-                        {% if membership and membership.plan.id == plan.id %}
-                            selected
-                        {% endif %}
-                    >
-                        {{ plan.Plan_Name }} - ₹{{ plan.Plan_price }}
+                <label for="membership_plan">
+                    Membership Plan
+                </label>
+
+                <select
+                    id="membership_plan"
+                    name="membership_plan"
+                >
+
+                    <option value="">
+                        No Membership
                     </option>
 
-                {% endfor %}
 
-            </select>
+                    {% for plan in plans %}
 
-        </div>
+                        <option
+                            value="{{ plan.id }}"
+                            {% if membership and membership.plan.id == plan.id %}
+                                selected
+                            {% endif %}
+                        >
+
+                            {{ plan.Plan_Name }} - ₹{{ plan.Plan_price }}
+
+                        </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
 
 
-        <div class="form-group">
+            <!-- Start Date -->
 
-            <label for="membership_start_date">
-                Start Date
-            </label>
+            <div class="form-group">
 
-            <input
-                type="date"
-                id="membership_start_date"
-                name="membership_start_date"
-                value="{% if membership %}{{ membership.start_date|date:'Y-m-d' }}{% endif %}"
-            >
+                <label for="membership_start_date">
+                    Start Date
+                </label>
+
+                <input
+                    type="date"
+                    id="membership_start_date"
+                    name="membership_start_date"
+                    value="{% if membership %}{{ membership.start_date|date:'Y-m-d' }}{% endif %}"
+                >
+
+            </div>
+
+
+            <!-- Amount -->
+
+            <div class="form-group">
+
+                <label for="membership_amount">
+                    Amount
+                </label>
+
+                <input
+                    type="number"
+                    id="membership_amount"
+                    name="membership_amount"
+                    min="0"
+                    value="{% if membership %}{{ membership.amount }}{% endif %}"
+                >
+
+            </div>
+
+
+            <!-- Payment Status -->
+
+            <div class="form-group">
+
+                <label>
+                    Payment Status
+                </label>
+
+                <div class="payment-toggle">
+
+
+                    <label for="payment_paid">
+
+                        <input
+                            type="radio"
+                            id="payment_paid"
+                            name="payment_status"
+                            value="True"
+                            {% if membership and membership.Payment_Status %}checked{% endif %}
+                        >
+
+                        Paid
+
+                    </label>
+
+
+                    <label for="payment_pending">
+
+                        <input
+                            type="radio"
+                            id="payment_pending"
+                            name="payment_status"
+                            value="False"
+                            {% if not membership or not membership.Payment_Status %}checked{% endif %}
+                        >
+
+                        Pending
+
+                    </label>
+
+
+                </div>
+
+            </div>
+
+
+            <!-- Payment Date -->
+
+            <div class="form-group">
+
+                <label for="payment_date">
+                    Payment Date
+                </label>
+
+                <input
+                    type="date"
+                    id="payment_date"
+                    name="payment_date"
+                    value="{% if membership and membership.Payment_Date %}{{ membership.Payment_Date|date:'Y-m-d' }}{% endif %}"
+                >
+
+            </div>
+
+
+            <!-- Expiry Date -->
+
+            {% if membership %}
+
+                <div class="membership-expiry">
+
+                    <span class="info-label">
+                        Expiry Date
+                    </span>
+
+                    <span class="info-value">
+                        {{ membership.expiry_date|date:"d M Y" }}
+                    </span>
+
+                    <span class="expiry-note">
+                        Automatically calculated from the membership plan duration.
+                    </span>
+
+                </div>
+
+            {% endif %}
+
 
         </div>
 
     </div>
 
-    {% if membership %}
-
-        <div class="membership-expiry">
-
-            <span class="info-label">
-                Expiry Date
-            </span>
-
-            <span class="info-value">
-                {{ membership.expiry_date|date:"d M Y" }}
-            </span>
-
-            <span class="expiry-note">
-                Automatically calculated from the membership plan duration.
-            </span>
-
-        </div>
-
-    {% endif %}
-
-</div>
 
 
-
-
-
-    
-    
-    
+    <!-- ========================================= -->
+    <!-- FORM ACTIONS -->
+    <!-- ========================================= -->
 
     <div class="form-actions">
 
-    <button
-        type="button"
-        class="danger-btn"
-        onclick="if(confirm('Are you sure you want to delete this member? This action cannot be undone.')) { document.getElementById('delete-member-form').submit(); }"
-    >
-        Delete Member
-    </button>
 
-    <div class="form-actions-right">
-        <a href="{% url 'MemberDetails' member.id %}" class="secondary-btn">
-            Cancel
-        </a>
-
-        <button type="submit" class="primary-btn">
-            Save Changes
+        <button
+            type="button"
+            class="danger-btn"
+            onclick="if(confirm('Are you sure you want to delete this member? This action cannot be undone.')) { document.getElementById('delete-member-form').submit(); }"
+        >
+            Delete Member
         </button>
+
+
+        <div class="form-actions-right">
+
+
+            <a
+                href="{% url 'MemberDetails' member.id %}"
+                class="secondary-btn"
+            >
+                Cancel
+            </a>
+
+
+            <button
+                type="submit"
+                class="primary-btn"
+            >
+                Save Changes
+            </button>
+
+
+        </div>
+
     </div>
 
-</div>
 
 </form>
+
+
+
+<!-- ========================================= -->
+<!-- DELETE MEMBER FORM -->
+<!-- ========================================= -->
 
 <form
     method="POST"
@@ -273,7 +490,11 @@
     id="delete-member-form"
     style="display: none;"
 >
+
     {% csrf_token %}
+
 </form>
 
+
 {% endblock %}
+```
